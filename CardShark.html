@@ -32,11 +32,37 @@
 					<section id="main" class="wrapper">
 						<div class="inner">
 							<h1 class="major">Card Shark</h1>
-							<span class="image fit"><img src="images/????.png" alt="" /></span>
-							<h2>Website is under construction, but check-out the project</h2>
-							<p>It's probably still a little/lot messy, which is why it's not on here yet.
-								However, it does already have a number of fully functioning agents/environments/estimation functions/etc.,
-								so <a href="https://github.com/jtclark2/card_shark">check it out.</a></p>
+							<span><img src="images/CardSharkResult_Cropped.png" alt="" width="50%"/></span>
+							<h2>What is Card Shark?</h2>
+							<p>Card Shark is an computer vision program that recognizes card and highlights the optimal
+								moves to play. In particular, it's the world's best SET player!</p>
+							<h2>What is SET?</h2>
+								<iframe width="560" height="315" src="https://www.youtube.com/embed/NzXDfSFQ1c0"
+										title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+										clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+								</iframe>
+							<p>
+								Set is a card game in which 12 cards are laid out, and each player has to pick out sets of 3 cards that follow specific
+								patterns. Each card is identified by combination of 4 features: shape, color, and fill, and count. A set is formed,
+								when each feature is either the same across all three cards, or unqiue across all three cards.
+							</p>
+
+							<h2>How it works?</h2>
+							<p>
+								<ol>
+								<li>The application captures a frame, either from a saved image or live video from a webcam.</li>
+								<li>The frames is searched for contours, and then the collection of contours is searched for card-like shapes, based on size/shape/etc.</li>
+								<li>Each Card is then projected into a standard rectangle of known dimensions.</li>
+								<li>The card is then analyzed to determine all of the card's attributes: [Shape, Color, Count, Fill] And Card objects are created to match each of the card images.</li>
+								<li>The rules of set are applied, finding all showing sets.</li>
+								<li>Graphics overlays are generated, outline all identified cards, with text to show the attributes.</li>
+								<li>Finally, one of the sets is selected and highlighted with another color. </li>
+								</ol>
+
+								The program processes each frame by first finding contours and filtering for any that could
+								be card-shaped.
+							</p>
+							<a href="https://github.com/jtclark2/card_shark">Check it out.</a>
 						</div>
 					</section>
 
