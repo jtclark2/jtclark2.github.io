@@ -20,7 +20,6 @@
 				<nav>
 					<ul>
 						<li><a href="index.html">Home</a></li>
-						<!--<li><a href="RayTracingScreenShot.jpg" class="active">Projects</a></li>-->
 						<li><a href="elements.html">Elements</a></li>
 					</ul>
 				</nav>
@@ -33,10 +32,20 @@
 					<section id="main" class="wrapper">
 						<div class="inner">
 							<h1 class="major">AutoEncoder</h1>
-							<span class="image fit"><img src="images/WeldExtraction.JPG" alt="" /></span>
+							<!--<span class="image fit"><img src="images/WeldExtraction.JPG" alt="" /></span>-->
+							<img src="images/WeldExtraction.JPG" alt="" />
 							<h2><a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier">Explore the code!</a></h2>
 							<p>To learn about my application, and auto-encoders in general, keep reading. If you just
 							want to see the code, follow the link!</p>
+							<b>Notable Features:</b><ul>
+								<li>Preprocessing: loading, normalization, histogram equalization</li>
+								<li>Model and Training</li>
+								<li>Postprocessing:
+								<ul><li>Creating Loss Images (pseudo-segmentation)</li>
+								<li>Thresholding</li>
+								<li>Denoising (I created my own algorithm for this that worked really well! (I imagine someone has done something similar before - let me know if it has a name.)</li></ul></li>
+								<li>Analysis: Plotting precision-recall curves, and false-alarm/escape curves to set thresholds</li>
+							</ul>
 							<h2>What is an AutoEncoder</h2>
 							<p>An autoencoder is a FeedForward CNN (Convolutional Neural Network) that compresses an
 								image into a small hidden layer, sometimes called a latent space, and then reverses that
@@ -57,6 +66,9 @@
 								with very little noise. The model learns to compress and saves the key features for an image,
 								whether it's noisy or not. Then, when a noisy image is processed, it saves it,
 								forgetting the noise, and restoring the image without noise.
+								<a href="https://keras.io/examples/vision/autoencoder/">See more in the keras documentation.</a>
+								<img src="images/autoencoder_noisy_digits.png" alt="" />
+
 							</p>
 							<p><b>Anomaly Detection (the focus of this project):</b> Similarly, we can train a model to
 								encode a specific type of image, and then reuild everything from that. Have you ever talked
@@ -70,6 +82,7 @@
 								image to the restored image, I can create a mask showing all the areas that look different.
 								This mask represents anomalies in the image.
 							</p>
+							<img src="images/AnomalyDetected.JPG" alt="" data-position="50% 25%" />
 
 							<h2>How does an autoencoder work?</h2>
 							<p>This will only make sense if you already know the basics of a feed-forward CNN. Basically
@@ -99,13 +112,17 @@
 								chaeracterization, such as weld "quality". The programs we wrote certainly couldn't find something
 								unless we knew what we were looking for.
 							</p>
+							<img src="images/CNC_Laser_Welder.png">
+							<img src="https://i2.wp.com/www.devtec.com/wp-content/uploads/2013/04/DRY.jpg?resize=600%2C450">
 
 							<h2>Problem Statement</h2>
-							<p>For the sake of this project, we want to find 2 types of anomalies.
-							1) Known Anomalies: These are anomalies that can be predicted, and which we can specifically
-							inspect a part for. These are generally easier to find, since we know what we're looking for.
-							2) Unknown Anomalies: These are harder to find, because we don't know what we're looking for.
-							We just know what a good part looks like, and we want to spot anything that looks out of place.
+							<p>For the sake of this project, we want to find 2 types of anomalies:
+							<ol>
+								<li>Known Anomalies: These are anomalies that can be predicted, and which we can specifically
+									inspect a part for. These are generally easier to find, since we know what we're looking for.</li>
+							<li>Unknown Anomalies: These are harder to find, because we don't know what we're looking for.
+								We just know what a good part looks like, and we want to spot anything that looks out of place.</li>
+							</ol>
 							</p>
 							<p>For both (1) and (2), we will be writing a program to detect anomalies immediately before
 								performing a weld. The most common anomaly occurs when an operator mixes up parts, and
@@ -127,8 +144,9 @@
 								Totoro (from the beloved Miyazaki movie). Feel free to look through
 							<a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier/blob/main/BinaryClassifier.ipynb">that notebook,</a> and find
 								Totoro lounging around my home!
+								<img src="images/TotoroClassifier.JPG">
 							</p>
-							<h2>Why an auto-enocder / anomaly detector </h2>
+							<h2>Why an auto-encoder / anomaly detector </h2>
 							<p>An anomaly detector can start to find Unknown anaomalies. Reading through the notebook,
 								you'll find that the model is entirely trained on the nominal (unwelded) dataset, and it is
 								capable of detecting any anomalies, not just the welds (although that is the dataset we'll focus on.
@@ -143,6 +161,7 @@
 								were the overall dimensions of the weld, and exactly how well it was positioned...a future feature
 								may be a more in-depth analysis of weld "quality"
 							</p>
+							<img src="images/WeldMask.JPG">
 
 							<h2><a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier">The Repo can be found here.</a></h2>
 							<p>If you've made it this far, I strongly encourage you to look through the autoencoder notebook.</p>
