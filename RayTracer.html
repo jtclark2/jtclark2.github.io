@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Generic - Hyperspace by HTML5 UP</title>
+		<title>Ray Tracer - Trevor C.</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -33,26 +33,34 @@
 					<section id="main" class="wrapper">
 						<div class="inner">
 							<h1 class="major">Ray Tracer / Physics Based Renderer (PBR) </h1>
-							<span class="image fit"><img src="images/HighQualityRender.png" alt="" /></span>
-							<p>This Ray Tracer simulates a world, with a sensor array, and objects populating that world.
-								This is all written in C++, with no external libraries.
+							<span class="image fit"><img src="images/HighQualityRender.png" alt="Random Scene Rendered with 1000 rays per pixel" /></span>
+						<h2><a href="https://github.com/jtclark2/RayTracer">Visit the Ray Tracer Repository</a></li></h2>
+							<h2>What is a Ray Tracer?</h2>
+							<p>A Ray Tracer simulates a world/scene, particular the physics of the light rays that bounce
+								around the scene, hitting any object that populate that world. This considers how light
+								bounces/transmits/scatters off of these objects, and how it gets focused onto a camera/sensor
+								to eventually be turned into an image.
 							</p>
-							<p>Some key features include</p>
+
+							<h2>Key Features:</h2>
 							<ul>
-								<li>Diffuse Materials</li>
-								<li>Metals (Reflective)</li>
-								<li>Dielectric (Transparent, like glass)</li>
-								<li>Anti-aliasing</li>
-								<li>Positionable Camera</li>
-								<li>Defocus Blur (Depth of Field) - notice how objects very close/far away are out of focus (that's intentional)</li>
+								<li><b>Positionable Camera</b></li>
+								<li><b>Defocus Blur (Depth of Field)</b>: notice how objects very close/far away are out of focus (that's intentional)</li>
+								<li><b>Anti-aliasing</b>: Helps objects look more realistic (avoiding that jagged pixelated images.</li>
+								<li><b>Materials</b>: Determing how light behaves when hitting the surface<ul>
+										<li><b>Diffuse Materials</b>: Any non-reflective material, that scatters light in all directions</li>
+										<li><b>Metals (Reflective)</b>: Bounces in a particular direction, like it would off of a mirror</li>
+										<li><b>Dielectric (Transparent, like glass)</b>: Goes through material, based on ratio of indexes of refraction.</li>
+									</ul>
+								</li>
 							</ul>
 							<h2>What was the purpose of this project?</h2>
 							<p>The project itself is exciting for me. I've build simple 2D game engines before, but 3D
 								graphics is very new territory. It opens up a new world of tools, and it's very compelling visually.
 								My Fiancee is a 3D artist as well, so I'm always hearing about these concepts, and now I finally understand them!</p>
-
-							<h2>Why C++?</h2>
-							<p>C++ is a great language for getting a little closer to the hardware, and optimizing performance. This </p>
+							<p>This project also immersed me in C++, building experience with the language, and particularly with
+								a mindset of writing highly efficient/optimized code. This project does not use any
+								external libraries. All the math behind the rays is handling within this repo.</p>
 							<h2>Acknowledgements</h2>
 							<ul>
 								<li>Peter Shirley who wrote a great beginner book on ray tracing, which was the foundation for this!</li>
