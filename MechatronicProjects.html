@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Image Captioner - Trevor C.</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">Trevor's Projects</a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="elements.html">Elements</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">Mechatronics / Robotics Projects</h1>
+							<span class="image fit"><img src="images/????.png" alt="" /></span>
+							<h2>Mechatronics / Robotics Projects</h2>
+							<p>Here are a few snippets from robotics projects I've built.<a href="https://github.com/jtclark2/ImageCaptioning">Take a look here!</a></p>
+							<h3>Quadcopter</h3>
+							<iframe width="560" height="315" src="https://www.youtube.com/embed/ERFGYw_vcCU"
+									title="YouTube video player" frameborder="0"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowfullscreen>
+							</iframe>
+							<p>I built this with a friend back in 2013. This was our first semi-stable flight. It
+								definitely wasn't as stable as modern quadcopers, and we were still tuning parameters.
+								It was the middle of the night, and I hope we didn't wake the neighors (it sounds like
+								1000 swarms of bees). We had been working/testing inside all day though, and we just
+								had to get one test flight out!
+							</p>
+
+							<h3>Quadcopter</h3>
+							<iframe width="560" height="315" src="https://www.youtube.com/embed/3CbmWaZ6mP0"
+									title="YouTube video player" frameborder="0"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowfullscreen>
+							</iframe>
+							<p>This was my first autonomous robot! We had ~3 weeks to build and program this. It was the
+								final project in the second course of our mecatronics series (ME 218). The objective was
+								to knock down the towers in the order specified by a central commander. The bot queries
+								the commander remotely to check on targets, and each time one is disabled, it randomly
+								selects a new target. At the end of the run, the robot navigates back to hom, within
+								the red tape.</p>
+							<p>How does the bot locate itself and it's targets?
+								Sensors:
+								<ul>
+									<li>Tape Following: There are brightness sensors on the bottom of the bot.</li>
+									<li>IR Sensors: When a tower is activated, it also illuminates an IR emitter.</li>
+									<li>Wheel Encoders: We used dead-reckoning in between sensor readings. The bot had
+										a hardcoded map of all the target locations, and the
+										location it intended to fire nerf balls from.</li>
+									<li>Cannon Encoder / PID: The main nerf cannon was a wheel that spun up to shoot nerf
+										balls. We printed a circle with striped spokes, and glue it to the side of the
+										wheel to use as an encoder, which actually worked pretty well. We controlled the
+										wheel/projectile velocity with a PID algorithm.
+									</li>
+									<li><href a="https://www.microchip.com/en-us/product/ATmega168">ATmega168</href>:
+										I believ this was the brain of the bot...it's been a while, but it was
+										something like this.</li>
+								</ul>
+								The bot used dead reckoning and tape following to make it's way to the 'T' at the end of
+								the tape. Then it queries the commander and starts rotating to find targets. We were
+								definitely stretching the precision of all the sensors we were using, but we managed to
+								get it all working!</p>
+							<p>Our team consisted of three people. I focused on the firmware, while the other two
+								focused on hardware and electronics. Of course, we all chipped in wherever we could!</p>
+							<p>Around the 40 second mark in the video, the commander fails to register that one of the
+								towers is disabled. It's been a while, but I think our bot was confident enough that it
+								sent an override requesting the commander to advance to the next target.</p>
+
+							<h3>eBeam Glove</h3>
+							<iframe width="560" height="315" src="https://www.youtube.com/embed/Qd7BNSU8oS0"
+									title="YouTube video player" frameborder="0"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowfullscreen>
+							</iframe>
+							<p>This glove was made when I was working in a rapid-prototyping and user-testing team at
+								Luidia, making interactive whiteboards. I put this prototype together in ~3 days.
+								I used the part of a stylus that Luidia made to locate the finger on the screen. I added
+								flex sensors to the fingers and aluminum tape to the palm for gesture sensing. I
+								believe the extra functionality was enabled by a python script in the background that
+								was sending mouse movement / clicks / etc.
+							</p>
+							<p>We knew our clients wanted the hover functionality, and this glove was one of many
+								form-factors we considered. This prototype was definitely built to
+								demonstrate functionality, not looks. However, there was a lot of excitement when I
+								shared it, and I think the marketing team spun it to showing how cutting-edge we were.
+							</p>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
