@@ -76,6 +76,14 @@
 								If you train a model to compress pictures of fire trucks, then don't be surprised when
 								you give it a picture of a boat, and it comes out red, with a ladder on top. It only knows
 								how to describe the scene in terms of things it's experienced before.</p>
+							<p>I find this particularly interesting, since it's one of the few UNSUPERVISED learning
+								techniques used with deep learning models. We do not use labels to train this. Well,
+								technically the input image is the label, but no separate labels need to be generated.
+								That does hurt the predictive power in some ways, as we can't learn the specific features
+								of competing classes. However, it opens up the utility of this tool tremendously,
+								because we can find ANY outliers...not just pre-labeled classes.</p>
+							<!--Quirky thought...could I run an unsupervised clustering algorithm on the embedding space?
+							It would be crazy hard to tune, I'd know K=2. I could try K-means, or an expectation maximization model...-->
 							<p>That's exactly what I do in this project. I teach the model what a good/nominal part looks
 								like, and then ask it to reproduce that part. Anything it doesn't understand will fail
 								to encode, and will effectively disappear when I restore the image. By comparing the original
