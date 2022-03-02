@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>RL Toolkit - Trevor C.</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">Trevor's Projects</a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="elements.html">Elements</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<img src="images/???" alt="Placeholder for a cool mars / false color pic" />
+							<h1 class="major">Mars: Spectral Analysis, Denoising, and Landing Site Selection</h1>
+							<h2>The Mission and The Team</h2>
+							<p>Real quick, let's get through the acronym soup...From 2007 - 2009, I worked with
+								SETI (Search for Extra Terrestrial Intelligent) /
+								NASA(National Aeronautics and Space Administration) on the
+								CRISM (Compact Reconnaissance Imaging Spectrometer for Mars) team. CRISM is a hyperspectral camera on
+								MRO (the Mars Reconnaissance Orbiter), a satellite orbiting Mars.
+								My mentors were Janice Bishop, the I and Mario Parente a statistician and
+								<b>(look up and link their bios).</b>
+								I started my work data processing pipeline and simulation team, a hyperspectral  - Compact Reconnaissance Imaging Spectrometer for Mars
+							</p>
+							<img src="images/???" alt="Pull a picture of the orbiter, with the camera diagram - NASA made some good graphics" />
+							<p>
+								Our team was interested in a few things. Our explicit mission was to study the geology and climate
+								or Mars, and provide Reconnaissance to select future landing sites. In other words, learn as
+								much as we could about Mars, and figure out the most interesting spots to land future rovers.
+								Interesting spots were usually dictated by the minerals that were present, particularly
+								minerals that only form in the presence of water. Nobody at SETI actually thinks there
+								is life on Mars, but it is the only other planet that is both close enough to study, and
+								which may have had the appropriate conditions for life (as we know it) to form. We searched
+								for hydrated mineralolgy, which would suggest the presence of water, or rather a history
+								of water being present some time in the last few billion years.
+							</p>
+							<img src="images/???" alt="Maybe add a picture of the planet mars - just get the mood going"/>
+
+							<p>Additionally, we were interested in the scientific discoveries made along the way. The team
+								published a lot of work in planetary geology, chemistry, and remote sensing. The remote
+								sensing was my focus. I published on the data analysis pipeline, denoising methods,
+								and simulation tools. I even joined in a bit of the chemistry, presenting one poster on
+								spectral signatures for different mineral mixtures and grain sizes.
+								<b>I need to look up those papers</b>
+							</p>
+							<img src="images/???" alt="Add a pic of a plot of spectral signatures (ideally from my paper)"/>
+
+							<h2>My Contributions</h2>
+							<h3>Background</h3>
+							<p>First off, a little background about hyperspectral data. Most images that you look at are
+								either grayscale (1 color channel), or RGB (3 color channels). CRISM takes hyperspectral
+								data in 544 channels, make the color dimension very rich. Just using red, green, and blue,
+								we can distinguish between all sorts of things. If you see in 544 colors, you can learn
+								a lot. In fact, you can often tell what kind of minerals are present, and sometimes
+								even determine the grain sizes of dirt, and the amount of water that was present when
+								the minerals formed. With so many color channels, it was helpful to think of the data in
+								3D (height, width, channel), and we refers to hyperspectral images as data cubes.
+								</p>
+							<img src="images/???" alt="Add a datacube picture"/>
+							<h3>Atmosphere and Noise</h3>
+							<p>I spent my first summer with the team as an intern / student researcher, modeling Martian
+								atmosphere. We want to focus on the surface of the planet, so we factored out the atmosphere
+								and the spectral contributions of our light source, the sun. Around the time I graduated, I was invited to help the team further. In particular,
+								we needed to improve the image processing pipeline to deal with the failure of a critical
+								cooling system on MRO. The cooler failure resulted in equipment running much hotter than
+								intended, and introducing lots of different types of noise into our data. Mario and I
+								were put in charge of de-noising the images. We did a lot of work breaking down the hyperspectral
+								data cubes and finding statistically relevant ways to remove noise in 3D. In fact, we
+								did so well that there was initially some doubt about whether we had smoothed out too much
+								of the real information as well. We hadn't, but it would take us a long time to prove it...
+							</p>
+							<img src="images/???" alt="Pull a noisy pic and a result pic from our paper"/>
+							<h3>Analysis</h3>
+							<p>The second part of our work was analyzing the results, and writing filters to determine
+							what minerals were present. Some of these were manual, mostly ratios of different channels
+								that indicate the presence of certain minerals. More advanced models used machine learning
+							techniques to help reduce the dimensionality of data, and cluster it into different mineral
+							groups. We would often study pure minerals (called endmembers), as well as minerals in different abundances. Then
+							we would analyze the images, trying to determine how much of each mineral had contributed
+							to create the spectral signatures we saw.</p>
+							<img src="images/???" alt="Show pretty pictures - they don't even need to be from the paper. I can find these online"/>
+
+							<h3>Simulation</h3>
+							<p>Mars is far away (obviously). When we believed we had detected minerals, we had
+								no way to verify it. There was no way to get ground truth or labels for our data.
+								There was no way to assess the quality of our results. So we built a way! Starting with
+								spectral signatures found in the lab, we simulated high resolution maps (80GB) of Mars-like
+								terrain. Then we generated fractal elevation maps, applied realistic lighting, and atmosphere
+								contributions. Then we simulated CRISM, taking into account the responsiveness to various wavelengths,
+								as well as various types of noise that we had been able to isolate and explain (largely due to
+								temperature dependencies in the sensors. I knew we had done well, when our Principal Investigator
+								walked by one day, saw one of our simulations, and asked what region we were mapping.
+							</p>
+							<img src="images/???" alt="Pull pics from the paper if I have them...don't specifically remember these"/>
+
+							<h3>Validation</h3>
+							<p>The model was exceptionally realistic, and once we had it, we knew the ground truth of
+								pseudo-Martian terrain. We used that to proving that our denoising tools were accurately
+								removing noise, and inferring the real information. Some of our denoised data had looked
+								a little too good, and this data finally allowed us to verify that we were in fact recovering
+								real data, rather than just smoothing away signal along with the noise. We were also able
+								to start validating our analysis, and showing how good various detection tools were. This
+								work was quite solid, and we won best paper at the very first IEEE WHISPERS
+								(Workshop on Hyperspectral Image and Signal Processing: Evolution in Remote Sensing) conference.
+								<b> link the website, add the icon</b>
+								<b> Find the paper, and either post/link it</b>
+							</p>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
