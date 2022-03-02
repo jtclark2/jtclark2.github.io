@@ -66,7 +66,9 @@
 											<li><b>Color</b>:The HSV image is masked to isolate the edge of the shape. The hue is calculated
 												over the mask to find the closest color match.</li>
 											<li><b>Fill/Texture</b>: A mask is used to calculate average saturation. However, it's fairly
-												sensitive to lighting, so we normalize by the average saturation of the background.</li>
+												sensitive to lighting, so we normalize by the average saturation of the background.
+												I had started by looking for stripes, but low quality webcams struggle to focus,
+												so saturation proved more robust to changes in camera/lighting.</li>
 												<!--Why don't we take a ratio with the edge...that would vary with focus/lighting
 												just as much, and the solid fill will scale with lighting/focus, giving us a better
 												sense of the values...-->
@@ -77,6 +79,10 @@
 										as well as overlaying text to show the identified attributes. A key and fps
 										indicator are shown as well.</li>
 								</ol>
+							Finally, there are a few calibration routines. In general, just bring focus to the main window
+							and press 'c' to calibrate. The program will identify the different cards and recalibrate
+							for the current lighting condition. There are a few manual calibrations as well, but that
+							one is fully automated, and should get the job done in the vast majority of situations.
 							</p>
 							<a href="https://github.com/jtclark2/card_shark">Visit the repo</a>
 						</div>

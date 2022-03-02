@@ -32,13 +32,79 @@
 					<section id="main" class="wrapper">
 						<div class="inner">
 							<h1 class="major">Facial Keypoint Tracker</h1>
-							<span class="image fit"><img src="images/????.png" alt="" /></span>
-							<h2>Website is under construction, but check-out the project</h2>
-							<p>It works - might actually be ready, but I haven't looked it over since I turned it
-								in for a class project. It's got a few quirks that I would love to fix, though
-								if we're being honest, I'm not going to. Namely, it's trained on youtube data,
-								where the faces are all upright and well lit.
-								<a href="https://github.com/jtclark2/FacialKeyPoints">Check it out! There's a version you can run live to track yourself.</a></p>
+							<span><img src="images/????" alt="Placeholder for video!!!" /></span>
+							<h2>What is the Keypoint tracker?</h2>
+							<p>The Facial Keypoint tracker detects faces using Haar Cascades, and then neural network
+								to identify 68 keypoints on each face. Once we are able to find these keypoints,
+								it's easy to overlay filters. For this project, I put a simple sunglasses overlay, using
+								keypoints around the eyes. Feel free to download and try it out, or swap the points and
+								image to apply your preferred facial fun.</p>
+							<img src="images/HaarCascadeBoxes.JPG" alt="" />
+							<img src="images/FacialKeypointOverlay.JPG" alt="" />
+
+							<p> Visit the repository to download and run this program. There are 2 sets of files to
+								run this program. The first way is with the notebooks. These were written as part of the
+								Udacity Computer Vision Nano-Degree. They include a bit of data-wrangling, training,
+								and application. The second way is to run LiveFaceSearch.py, which uses the trained model
+								for a <a href="https://github.com/jtclark2/FacialKeyPoints/blob/main/LiveFaceSearch.py"><b>Live</b></a> demonstration. It will read from a webcam, extraction a face, overlaying
+								points, and those stylin' shades!</p>
+							<img src="images/SunGlassesFilter.JPG" alt="" />
+							<!--<h2>Core technologies</h2>-->
+							<!--<h3>Haar Face Detection</h3>-->
+							<!--<p>Haar face detection is fast, reliable, and implementations are readily available,-->
+								<!--making this a great choice. For this project I used the opencv implementation, pre-trained-->
+								<!--for frontal face detection.</p>-->
+							<!--<p>Basically, Haar features are hard edged filters with 1s in some areas and -1s in other-->
+								<!--areas. This makes it computationally very efficient, since we're really just adding/subtracting-->
+								<!--masked regions. A handful of simple filters have proven very effective in face detection.-->
+								<!--These are used at different scales, and the result of each filter is a feature that then-->
+								<!--gets combined through boosting to create a filter that can make soft predictions about the-->
+								<!--probably of a specific image containing a face. This filter is run at various scales and-->
+								<!--positions across the image to detect any faces within.</p>-->
+							<!--<h3>CNN</h3>-->
+							<!--<p>Very briefly, a CNN uses kernels, small filters that apply across the image similar techniques can be used for localizing any object within images. The </p>-->
+
+							<h2>Model and Data</h2>
+							<p>The model used 5 convolutional layers, each with relu activation and pooling layers in between,
+								before flattening the dense for a dense layer. Read
+								<a href="https://github.com/jtclark2/FacialKeyPoints/blob/main/models.py">models.py</a>
+								for details. The model was trained with an Adam Optimizer and MSE Loss.
+							</p>
+							<p>The model was trained for on 5770 images from the <a href="https://www.cs.tau.ac.il/~wolf/ytfaces/">YouTube Faces Dataset</a>,
+								using a 60/40 train/test split. The model was trained for 30 epochs.</p>
+							<img src="images/FacialKeypoints_TrainingPlot.JPG" alt="" />
+
+
+							<h2>Strengths and Weaknesses</h2>
+							<p>The application does an excellent detecting faces quickly and consistently, using the Haar
+								cascade. It identifies the face well, and generally places keypoints correctly. It is
+								quite robust to changes in lighting, background and skin tone.</p>
+
+							<!--I may have a bug in my face extraction and scaling...The blue square seems to be
+							very consistent, but the crops do not!-->
+							<p>The main challenges are in picking up a wide variety of facial orientations and expressions.
+								The Haar detector I'm using is explicitly trained for frontal views, "haarcascade_frontalface_default.xml",
+								so that was well within expectations.</p>
+							<p>The model was trained on the YouTube Faces Dataset, and less than 4000 images were used
+								for training. The model is definitely overfit to faces looking towards the camera, and
+								making neutral expressions and smiles, since those are the expressions people make on camera.
+								There are not a lot of goofy faces, so when you make a goofy face, it does not pick up
+								the expression nearly as strongly as it should.
+							</p>
+							<p>As with many models, collecting a broader dataset could help. Data augmentation might help
+								a little as well. I'm already cropping randomly, but horizontal mirroring, and random
+								scaling couldn't hurt. I just wouldn't expect a huge improvement, since neither of those
+								will impact orientation of the head, or add much variety to the expressions.
+							<ul>
+								<li style="color:green;">True Labels: Green</li>
+								<li style="color:red;">Predictions: Red</li>
+							</ul>
+
+							<img src="images/YoutubeImages1.JPG" alt="" />
+							<img src="images/YoutubeImages2.JPG" alt="" />
+							<img src="images/YoutubeImages3.JPG" alt="" />
+
+							<h3><a href="https://github.com/jtclark2/FacialKeyPoints">Visit the repo to learn more!</a></h3>
 						</div>
 					</section>
 
