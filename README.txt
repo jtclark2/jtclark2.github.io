@@ -1,3 +1,0 @@
-Default Host: github: https://jtclark2.github.io/git
-
-I'm going to replace this with a markdown...
