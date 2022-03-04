@@ -32,9 +32,13 @@
 					<section id="main" class="wrapper">
 						<div class="inner">
 							<h1 class="major">Card Shark</h1>
-							<span><img src="images/ProcessedImage_Cropped.jpg" alt="" width="50%"/></span>
+							<iframe width="784" height="441" src="https://www.youtube.com/embed/KeHkl_6ff6o"
+									title="YouTube video player" frameborder="0"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowfullscreen>
+							</iframe>
 							<h2>What is Card Shark?</h2>
-							<p>Card Shark is an computer vision program that recognizes card and highlights the optimal
+							<p>Card Shark is a computer vision program that recognizes card and highlights the optimal
 								moves to play. In particular, it's the world's best SET player!</p>
 							<h2>What is SET?</h2>
 								<iframe width="560" height="315" src="https://www.youtube.com/embed/NzXDfSFQ1c0"
@@ -47,28 +51,73 @@
 								when each feature is either the same across all three cards, or unqiue across all three cards.
 							</p>
 
-							<h2>How it works?</h2>
+							<h2>How the application works?</h2>
 							<p>
 								<ol>
 									<li>The application captures a frame, either from file or live video.</li>
-									<li>The frame is pre-processed to filter out major variations in brightness.</li>
-									<li>The frame is thresholded and we search for shapes (contours), and then filter them to keep only the ones that are the shape and size of cards.</li>
+									<span><img src="images/Capture_AllShades.jpg" alt="pic of raw frame (small)" width="25%"/></span>
+									<li>The frame is pre-processed to filter out major variations in brightness/lighting.
+										This flattens the image so that we can use a single threshold over the entire image
+										in the next step, rather than a dynamic threshold, which is far less likely to
+										form continuous borders, and create consistently closed curves for contour generation.</li>
+									<span><img src="images/PreCorrection.jpg" alt="Pic of original image" width="25%"/></span> -
+									<span><img src="images/LightCorrection.jpg" alt="Pic of background subtract (big bowl)" width="25%"/></span> =
+									<span><img src="images/PostCorrection.jpg" alt="corrected image" width="25%"/></span>
+									<li>The frame is thresholded using <a href="https://en.wikipedia.org/wiki/Otsu%27s_method">Otsu's method</a>,
+										leaving us with a binary image showing the shapes of objects in the image. We
+										isolate the borders of these shapes, extracting them as contours. Then we filter
+										the borders/contours, keeping only the ones that are the shape and size of cards.
+										Basically, we check if the contour can be approximated well with exactly 4 points,
+										and check if the area of a quadrilateral formed by those 4 points is similar
+										to the area of the full contour. There of a few more checks related to size and
+										aspect ratio as well.
+									</li>
+									<span><img src="images/card_contour_thresh.jpg" alt="thresh image" width="50%"/></span>
 									<li>Each Card is processed to determine it's attributes:
+										<span><img src="images/???" alt="plot of 12 cards" width="50%"/></span>
 										<ol>
 											<li>Corners of card are extracted from contour, and used to project the card into a rectangle of standardized dimensions.</li>
 											<li>The cards are pre-processed, converting to grayscale, blurring to reduce noise, and subtracting variation in background brightness.</li>
-											<li><b>Shape and Count</b>: Thresholding is performed, to generate a silhouette of the shapes on the card.
-												This silhouette is compared to ideal templates using intersection over union.</li>
+											<li>Thresholding is performed, generate a contours.</li>
+											<span><img src="images/IsolatedCardsPlot.JPG" alt="Isolated Cards Plot" width="50%"/></span>
+											<li><b>Shape and Count</b>:
+													<ul>
+														<li>Method 1: The contours are used to generate masks of the contour
+															silhouette. This silhouette is compared to previously recorded
+															templates of each shape/count combination, using intersection over union.
+															This method works quite well, and generalizes nicely to any deck of cards.
+															It works 99.9% of the time, but it is a bit sensitive to translation
+															(shifts in x and y). If the card's region of interest is not perfectly
+															centered, misidentification can occur.
+														</li>
+															<span><img src="images/Intersection.JPG" alt="intersection" width="25%"/></span>
+															<span><img src="images/Union.JPG" alt="union" width="25%"/></span>
+															<span><img src="images/IntersectionOverUnion.JPG" alt="IntersectionOverUnion" width="25%"/></span>
+
+														<li>Method 2: In order to overcome the translation invariance, I wrote detectors
+															specific to the shapes used in SET. These detectors calculate
+															the area of the shape, and then compare it to the areas of shapes
+															generated with convex hulls and bounding rectangles. Different shapes
+															very reliably generate different ratios of area, and I've utilized
+															that as a metric to identify particular shapes.</li>
+															<span><img src="images/ConvexHull_BoundingBox.JPG" alt="shape with overlaid convex hull/ bounding box" width="25%"/></span>
+
+													</ul>
+											</li>
 											<li>The silhouettes from the previous step are treated as mask, and erode operations
 											are used with some bitwise operations to generate masks that isolate the edges
 												of shapes, the interior fill of shapes, and the background of the card.</li>
 											<li>A copy of the image is converted into HSV space.</li>
 											<li><b>Color</b>:The HSV image is masked to isolate the edge of the shape. The hue is calculated
 												over the mask to find the closest color match.</li>
+												<span><img src="images/EdgeMask.JPG" alt="masked edge" width="25%"/></span>
+												<span><img src="images/EdgeMaskSaturated.JPG" alt="masked edge, saturated" width="25%"/></span>
 											<li><b>Fill/Texture</b>: A mask is used to calculate average saturation. However, it's fairly
 												sensitive to lighting, so we normalize by the average saturation of the background.
 												I had started by looking for stripes, but low quality webcams struggle to focus,
 												so saturation proved more robust to changes in camera/lighting.</li>
+											<span><img src="images/FillMask.JPG" alt="Masked fill" width="25%"/></span>
+											<span><img src="images/BackgroundMask.JPG" alt="Masked background" width="25%"/></span>
 												<!--Why don't we take a ratio with the edge...that would vary with focus/lighting
 												just as much, and the solid fill will scale with lighting/focus, giving us a better
 												sense of the values...-->
@@ -78,6 +127,7 @@
 									<li>Graphics overlays are generated to show outline contours, cards, and sets,
 										as well as overlaying text to show the identified attributes. A key and fps
 										indicator are shown as well.</li>
+									<span><img src="images/Processed_WithOverlay.JPG" alt="Full output image with overlays" width="50%"/></span>
 								</ol>
 							Finally, there are a few calibration routines. In general, just bring focus to the main window
 							and press 'c' to calibrate. The program will identify the different cards and recalibrate

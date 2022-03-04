@@ -12,13 +12,19 @@ It's really just a TODO list, so it's going to be boring for anyone else!
     - <strike>Facial Keypoints</strike>
     - <strike>CRISM</strike>
 - Find pics/videos for all the stubs
+    - list of images/videos is growing...should I leave in images/ or start sub-dividing?
 - Proofread everything
 - Fill out remaining projects 
     - (medium priority - already generated core content)
         - Mars/Crism
         - Facial Keypoints
     - (low priority - fix what you have first)
-        - Luidia
-        - Intuitive
+        - Luidia (a few project ideas are stubbed on this page already)
+        - Intuitive (a few project ideas are stubbed on this page already)
         - Hobbies
         - Adding any more content to existing project pages
+        - Wakeboard
+        - Wakeboarding rack
+- Add Sections:
+    - Personal / About Me section
+    - Add School and Work History Section (Luidia / Inutitive / SETI | possibly RHIC, solar energy commission, Davis, Stanford)
