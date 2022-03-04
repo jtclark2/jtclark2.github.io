@@ -30,7 +30,7 @@
 
 				<!-- Main -->
 					<section id="main" class="wrapper">
-						<div class="inner">
+						<p class="inner">
 							<h1 class="major">Card Shark</h1>
 							<iframe width="784" height="441" src="https://www.youtube.com/embed/KeHkl_6ff6o"
 									title="YouTube video player" frameborder="0"
@@ -74,12 +74,12 @@
 									</li>
 									<span><img src="images/card_contour_thresh.jpg" alt="thresh image" width="50%"/></span>
 									<li>Each Card is processed to determine it's attributes:
-										<span><img src="images/???" alt="plot of 12 cards" width="50%"/></span>
+											<span><img src="images/IsolatedCardsPlot.JPG" alt="Isolated Cards Plot" width="50%"/></span>
 										<ol>
 											<li>Corners of card are extracted from contour, and used to project the card into a rectangle of standardized dimensions.</li>
 											<li>The cards are pre-processed, converting to grayscale, blurring to reduce noise, and subtracting variation in background brightness.</li>
 											<li>Thresholding is performed, generate a contours.</li>
-											<span><img src="images/IsolatedCardsPlot.JPG" alt="Isolated Cards Plot" width="50%"/></span>
+											<span><img src="images/CardBasicMask.JPG" alt="Isolated Cards Plot" width="50%"/></span>
 											<li><b>Shape and Count</b>:
 													<ul>
 														<li>Method 1: The contours are used to generate masks of the contour
@@ -129,11 +129,37 @@
 										indicator are shown as well.</li>
 									<span><img src="images/Processed_WithOverlay.JPG" alt="Full output image with overlays" width="50%"/></span>
 								</ol>
-							Finally, there are a few calibration routines. In general, just bring focus to the main window
-							and press 'c' to calibrate. The program will identify the different cards and recalibrate
-							for the current lighting condition. There are a few manual calibrations as well, but that
-							one is fully automated, and should get the job done in the vast majority of situations.
 							</p>
+
+							<p>
+								The main challenge in this project was dealing with poor image quality (cheap cameras),
+								variations in lighting, or uneven lighting.
+								<ul>
+									<li>The purple used on these cards is the least saturated, making it difficult to detect,
+								particularly in bright/over-saturated conditions, where the striped purple becomes very close to a
+								light gray.</li>
+									<li>Realistically lighting brightness and source changes quite a bit. The colors of cards
+								are influenced by the source, and needed to be color-balanced. Outside light is great,
+								as long as it's not too bright. Room lights are more yellow than natural light,
+								while iphones and computer screens are much more blue.</li>
+									<li>Variations in intensity throughout an image make thresholding challenging,
+									needing to be isolated and corrected.</li>
+								</ul>
+							</p>
+
+							<p>
+								I wrote this application to be as robust as possible, but in extreme situations, it
+								makes sense to recalibrate (eg: if you're playing outside, or in a room with the lights
+								off and just the glow of a tv screen). For these situations, there are a handful of
+								routines you can run with keyboard inputs. For the most part, just press 'c' to
+								calibrate colors, and use '[' and ']' to adjust the saturation threshold. There are a
+								number of additional features (saving, pausing, quitting, more manual calibrations, etc.)
+								which can be found in KeyboardInput.py, but I don't anticipate most users needed those.
+								I included them mostly for development purposes.
+
+								<img src="images/Cards_LightingVariation.JPG" alt="Lighting Variations" width="50%" />
+							</p>
+
 							<a href="https://github.com/jtclark2/card_shark">Visit the repo</a>
 						</div>
 					</section>
