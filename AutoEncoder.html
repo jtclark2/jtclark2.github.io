@@ -31,148 +31,195 @@
 				<!-- Main -->
 					<section id="main" class="wrapper">
 						<div class="inner">
-							<h1 class="major">AutoEncoder</h1>
-							<!--<span class="image fit"><img src="images/WeldExtraction.JPG" alt="" /></span>-->
+							<h1 class="major">AutoEncoder for Anomaly Detection</h1>
 							<img src="images/WeldExtraction.JPG" alt="" />
 							<h2><a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier">Explore the code!</a></h2>
-							<p>To learn about my application, and auto-encoders in general, keep reading. If you just
-							want to see the code, follow the link!</p>
-							<b>Notable Features:</b><ul>
-								<li>Preprocessing: loading, normalization, histogram equalization</li>
-								<li>Model and Training</li>
-								<li>Postprocessing:
-								<ul><li>Creating Loss Images (pseudo-segmentation)</li>
-								<li>Thresholding</li>
-								<li>Denoising (I created my own algorithm for this that worked really well! (I imagine someone has done something similar before - let me know if it has a name.)</li></ul></li>
-								<li>Analysis: Plotting precision-recall curves, and false-alarm/escape curves to set thresholds</li>
+							<h2>What's this project about?</h2>
+							<p></p>
+							<img src="images/CubesAndSphere_CreativeCommonsLicense.jpg" alt="Which one doesn't belong?" width="25%" align="left">
+
+
+							<p>This project explores some tools to supplement</p>
+
+							<h2><b>Project Goals and Motivation</b></h2>
+							<p>This project explores tools (classifiers and auto-encoders) as alternatives to traditional
+								computer vision tools. In particular, I will be detecting the presence of welds on a part.
+								This is not necessarily a better approach (in fact, it's a bit overkill), but we'll be
+								using it to describe the technology and some of the advantages/disadvantages of this
+								approach. We'll focus far more on the auto-encoder, simply because classifiers are so
+								prevalent.
+							</p>
+
+
+							<p>For this application, I wanted to answer a few questions:
+							<ul>
+								<li>Could we create a program that didn't need any specific knowledge of the features
+									that we would be detecting? If so, the program could generalize to new applications
+									by updating just training data and hyperparameters.
+								</li>
+								<li>Could we training with a small dataset (~150 images). Deep learning has a reputation
+								of requiring large amounts of data, but given how well controlled this dataset is, I
+								wanted to know if we could manage with a small dataset.</li>
+								<li>Can we detect problems/anamolies that we didn't explicitly anticipate during training?</li>
 							</ul>
+							</p>
+
+
+
+							<h2>Simple Detection / Binary Classification</h2>
+							<p>
+								Binary Classification is the obvious choice for determining the presence of a specific
+								feature/defect, since it is effectively a binary classification problem. I wrote it for
+								a slightly different shaped data-set, but for confidentiality reasons, I can't share that.
+								Rather than re-wrinting it for the weld data I'll be sharing below, I created another data set
+								with pictures of a stuffed Totoro (from the beloved Miyazaki movie). This also has the advantage
+								of showing a much more varied / difficult dataset.
+							</p>
+							<p>
+								The program makes good use of Tensorflow tools that greatly simplify data loading and
+								augmentation. If I were to repeat this project, I would use transfer learning with
+								and established model, such as VGG-16, and just freeze the last few layers. I did
+								something similar in <a href="https://github.com/jtclark2/ImageCaptioning/blob/main/model.py">this project.</a></p>
+								Feel free to look through <a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier/blob/main/BinaryClassifier.ipynb">that notebook</a>
+								for details, though we'll spend the rest of this page discussing other tools.
+							</p>
+								<img src="images/TotoroClassifier.JPG">
+
 							<h2>What is an AutoEncoder</h2>
 							<p>An autoencoder is a FeedForward CNN (Convolutional Neural Network) that compresses an
 								image into a small hidden layer, sometimes called a latent space, and then reverses that
 								operation to restore the original image. The act of encoding the image data into a lower
 								dimensional space is what lends the model its name.</p>
 							<p>
-								<b>Lossy Compression</b> This latent space can be much more efficient than traditional compression methods.
-								This is because the model trains on a data set, learning about the features found in that
-								particular data set. However, high compression ratio is just one of the benefits. While
-								the latent space is learns to be extremely good at replicating a certain type of image,
-								it is lossy. This means that when an image is restored, it will be able to approximate
-								the original image, but not be able to restore it perfectly. We can tune the model,
-								hyperparameters, and training data to make the model to prioritize certain features,
-								and not place any value on others.
+								<b>Compression and Specialization:</b> This latent space is a compressed version of that image. This
+								compression can be much more efficient than traditional methods, though it is highly
+								specialized to the type of data it has trained on.
+								Imagine a highly trained musician looking at a piece of music. In a glance, they can
+								learn a lot about that piece, remembering the music much more effectively than a person
+								without that training. A doctor might similarly understand a brain-scan with a glance. However,
+								the highly trained musician does not have any skill to help them memorize brain scans.
+								Both are highly trained, and highly specialized.
 							</p>
+							<p><b>Lossy images</b> High compression ratio is an excellent benefit; however, it comes at
+								the price of being a lossy compression model. That means that even a very good model will
+								not remember/recreate the original image perfectly. From our previous example, the musician
+								who glanced at a piece of music might be able to play parts of the piece well, but they might
+								play chords in a slightly different way or improvize parts. Futhermore, when that musician
+								tries to recreate the brain scan, they will probably miss most of the important information.
+								This means that when an image is restored, it will be able to approximate
+								the original image, rebuilding it with the features we've observed, but failing how
+								understanding how to reconstruct anything else. While this may sound like a limitation,
+								it's actually the first step to distinguishing different types of information in our image!
+							</p>
+						Lossy Compression (using <b>well</b> specialized features)
+								<br>
+								<img src="images/LossyCompression.JPG", alt="Lossy Compression Example">
+								<br>
+						Loss Compression (using <b>poorly</b> specialized feature)
+								<br>
+								<img src="images/PoorlySpecializedCompression.JPG" alt="PoorlySpecializedCompression.JPG"/>
 							<p>
-								<b>Denoising:</b> One common application of this is to train a model to compress clean images,
-								with very little noise. The model learns to compress and saves the key features for an image,
-								whether it's noisy or not. Then, when a noisy image is processed, it saves it,
-								forgetting the noise, and restoring the image without noise.
-								<a href="https://keras.io/examples/vision/autoencoder/">See more in the keras documentation.</a>
+								<b>Denoising:</b> Using the fact that our models are lossy and specialized, we can start
+								doing something really interesting. We can start remembering only the things that matter
+								to us. One common application of this is to train a model on very clean images,
+								so that it starts to learning a set of underlying patterns/symbols. After that is trained,
+								feed it noisy data. Because it has learned to understand the signal, but not the noise,
+								it saves the clean data, and doesn't have the ability to remember the specifics of the
+								random noise. When this image is decompressed, the noise has disappeared, and the image
+								has been denoised.
+								<a href="https://keras.io/examples/vision/autoencoder/">Keras has a simple example that shows how powerful this can be, even with VERY noisy images.</a>
 								<img src="images/autoencoder_noisy_digits.png" alt="" />
 
 							</p>
-							<p><b>Anomaly Detection (the focus of this project):</b> Similarly, we can train a model to
-								encode a specific type of image, and then reuild everything from that. Have you ever talked
-								to a friend who was so obsessed with a topic, that they saw the whole world through that lens?
-								If you train a model to compress pictures of fire trucks, then don't be surprised when
-								you give it a picture of a boat, and it comes out red, with a ladder on top. It only knows
-								how to describe the scene in terms of things it's experienced before.</p>
-							<p>I find this particularly interesting, since it's one of the few UNSUPERVISED learning
-								techniques used with deep learning models. We do not use labels to train this. Well,
-								technically the input image is the label, but no separate labels need to be generated.
-								That does hurt the predictive power in some ways, as we can't learn the specific features
-								of competing classes. However, it opens up the utility of this tool tremendously,
-								because we can find ANY outliers...not just pre-labeled classes.</p>
-							<!--Quirky thought...could I run an unsupervised clustering algorithm on the embedding space?
-							It would be crazy hard to tune, I'd know K=2. I could try K-means, or an expectation maximization model...-->
-							<p>That's exactly what I do in this project. I teach the model what a good/nominal part looks
-								like, and then ask it to reproduce that part. Anything it doesn't understand will fail
-								to encode, and will effectively disappear when I restore the image. By comparing the original
-								image to the restored image, I can create a mask showing all the areas that look different.
-								This mask represents anomalies in the image.
-							</p>
+							<p><b>Anomaly Detection:</b> Similarly, we can train a model to remember a nominal image,
+								representing all the features we hope to see. This model learns to reproduce only the
+								features we've taught it about. Now, if new feature appears in an image, our latent
+								space in unable to save it. As a result, we regenerate it incorrectly, producing junk or
+								trying to create the object using the features that we trained on. Finally, we just
+								compare this new image to the original, and we can isolate any poorly reproduced portions,
+								building a heat map of foreign features in a scene.
 							<img src="images/AnomalyDetected.JPG" alt="" data-position="50% 25%" />
-
-							<h2>How does an autoencoder work?</h2>
-							<p>This will only make sense if you already know the basics of a feed-forward CNN. Basically
-							you just have a serious of convolution layers maxpooling layers that compress the data down.
-							Then you expand it back to the original size using the inverse, which is a series of
-							convolutionTrapose layers (matching the stride to the original pooling sizes). The smaller the center
-							layer, the higher the compression ratio. A high compression ratio means a highly specialized
-							encoder, which means a model that does better at compressing a specific type of image. If we
-							compress too far, we won't even capture the variation of nominal inputs, so there is a balance
-								to strike. </p>
-							<p>I also found that increasing the channel dimension was critical to getting good results,
-								since I'm looking for local features. This isn't the case in the simple denoiser, where
-								you actually want to hold onto much of the spatial information.</p>
-							<p>Then you train the model by making the labels (expected output) the same as the input. This
-							gradually teaches the model to reproduce the original image.</p>
-
-							<h2><b>Application Background:</b></h2>
-							<p>When I built this, I was automating a CNC welding machine. I was writing programs to
-								position the parts, identify features to aim the welding laser, and assess whether the
-								part was welded, and charactize the quality of the weld. This required writing different
-								multiple programs for each welding application.
 							</p>
-							<p>I wanted to explore ways to generalize a single program so that I could just feed in
-								a dataset, tune a few hyper parameters, and have the new weld application working.
-								Furthermore, the tools I was use (Cognex Vision Systems) had a conventional toolset,
-								which was intended for finding lines/shapes/features, but struggled with more advanced
-								chaeracterization, such as weld "quality". The programs we wrote certainly couldn't find something
-								unless we knew what we were looking for.
-							</p>
-							<img src="images/CNC_Laser_Welder.png">
-							<img src="https://i2.wp.com/www.devtec.com/wp-content/uploads/2013/04/DRY.jpg?resize=600%2C450">
 
-							<h2>Problem Statement</h2>
-							<p>For the sake of this project, we want to find 2 types of anomalies:
+							<p>As you can see, the output of the loss function is a heat map of the anomalous parts of
+								the image. Since this model trained on unwelded data, welds are showing up as anomalies.
+								We've effectively generated a heat-map of how much each image looks like a weld. If I was
+								still working with my old welding team, I would love to learn more about what makes a
+								"good" weld, so we could create metrics to quantify weld "quality".
+							</p>
+							<p><b>Theoretical side-note:</b> This output looks very similar to the output
+								of a segmentation problem. However, there are a few notable differences. In true
+								segmentation, the output would be an image of labeled classes. In contrast, we've applied
+								the loss function to generate a real-valued image. However, in both cases, we have effectively
+								highlighted the weld region.
+								<p> A key difference is that the segmentation problem requires labeled data, whereas
+								this technique does not. Technically, we just re-use the input image as the label, though
+								nothing needs to be generated externally. This is one of the few applications I'm aware
+								of in which deep learning is used as an unsupervised model. It requires a bit of
+								post-processing, but in return, we gain a way to find ANY outliers, not just data that
+								vary in the direction of a pre-labeled classes.</p>
+							<p>
+
+							</p>
+
+							<h2>The processing pipeline:</h2>
 							<ol>
-								<li>Known Anomalies: These are anomalies that can be predicted, and which we can specifically
-									inspect a part for. These are generally easier to find, since we know what we're looking for.</li>
-							<li>Unknown Anomalies: These are harder to find, because we don't know what we're looking for.
-								We just know what a good part looks like, and we want to spot anything that looks out of place.</li>
+								<li><b>Pre-Processing:</b></li>
+									<ol>
+										<li>Load images</li>
+											<img src="images/???" alt="Show a raw image (nominal and anomalous)">
+										<li>resize images</li>
+										<li>Convert BGR to RGB</li>
+										<li>Equalize Histograms</li>
+											<img src="images/???" alt="Show the image equalized (nominal and anomalous)">
+										<li>Normalize values</li>
+										<li>Convert to numpy arrays</li>
+										<li>Crop (if requested)</li>
+									</ol>
+								<li>
+									<p>
+										<b>Model</b>: This model uses a feed-forward CNN to reduce the dimensionality
+										to the latent space, and then the reverse to scale it back up to an image.
+										Compression is repeated 4 times. Each compression consists of a 2D convolution
+										followed by a max-pooling layer. The number of channels is gradually increased as the
+										spatial dimensions are quickly decreased. The decompression is just the inverse.
+										It is performed in 4 steps as well, using Convolution 2D Transpose layers, increasing
+										the dimensionality back to the original (256,256,1) dimensions of the image.
+										The exact parameters of this compression were hand tuned experimentally in order
+										to find a compression layer that was good at capturing trained data, but bad at
+										generalizing to new data. In other words, high specialization, and low-moderate loss.
+									</p>
+									<p>I found that increasing the channel dimension was critical to getting good results,
+								since I'm looking for local features. This isn't the case in the simple denoiser, where
+								you actually want to hold onto much of the spatial information.
+									</p>
+									<img src="images/???" alt="Model Output (nominal and anomalous)">
+								</li>
+								<li><b>Post-Processing:</b></li>
+								<ol>
+									<li>Use loss function calculate the differences between the original and predicted images.
+									At this stage, the image is a great heat-map, and can be useful for manual inspection.</li>
+									<img src="images/???" alt="Loss Image (nominal and anomalous)">
+									<li>Binarize the anomaly image, based in a tuned threshold</li>
+									<img src="images/???" alt="Binary Image (nominal and anomalous)">
+									<li>Denoise: Using a custom algorithm I wrote based on connected clusters</li>
+									<img src="images/???" alt="Denoised Image (nominal and anomalous)">
+									<li>(optional) Crop images to a region of interest: This is not required, but can
+									be useful to strengthen signal to noise ratio for the detection of a specific feature.</li>
+									<li>Take the mean of the image, as a summary metric to represent how anamalous the image was.</li>
+								</ol>
+								<li><b>Analysis:</b> A discussion of trade-offs in techniques, and a discussion
+									of setting thresholds. The usual machine learning tools are bit differnt from the
+									manufacturing process control tools, so we discuss both a bit. This includes some
+									light discussion of Cpk and plotting precision-recall curves and false-alarm/escape curves.</li>
+									<img src="images/???" alt="Result plot">
 							</ol>
-							</p>
-							<p>For both (1) and (2), we will be writing a program to detect anomalies immediately before
-								performing a weld. The most common anomaly occurs when an operator mixes up parts, and
-								re-inserts the part that was just welded. To simulate this, I collected ~300 images,
-								147 of which are not yet welded (nominal), and 146 of which are welded (anomalous). We'll
-								be primarily trying to distinguish between these two cases.</p>
-							<p><b>Bonus:</b> In addition to detecting the presence of a weld, we would like to be
-								able to find <b>Unknown anomalies</b>, and <b>characterize the individual welds</b>. </p>
 
-							<h2>Simple Detection / Binary Classification</h2>
-							<p>Binary Classification is the obvious choice for determining the presence of a specific feature/defect.
-								I absolutely started there, and it worked quite well.
-								The program makes good use of some tensorflow tools that greatly simplify data loading,
-								and augmentation. However, everyone binary classifiers are everywhere...In fact, I should
-								have used an established model (like VGG-16) and just frozen the last few layers. </p>
-							<p>However, that program was originally written for an RGB camera (I'm using grayscale now),
-								That data also ended up being inappropriate to share, since it showed an unreleased product
-								from my previous company. So...I got a bit creative, and swapped in pictures of a stuffed
-								Totoro (from the beloved Miyazaki movie). Feel free to look through
-							<a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier/blob/main/BinaryClassifier.ipynb">that notebook,</a> and find
-								Totoro lounging around my home!
-								<img src="images/TotoroClassifier.JPG">
-							</p>
-							<h2>Why an auto-encoder / anomaly detector </h2>
-							<p>An anomaly detector can start to find Unknown anaomalies. Reading through the notebook,
-								you'll find that the model is entirely trained on the nominal (unwelded) dataset, and it is
-								capable of detecting any anomalies, not just the welds (although that is the dataset we'll focus on.
-								When we know the specific location of an anomaly, the predictive power of this model increases even further.
-							</p>
-							<p>We can begin to build a map of the weld itself. This is effectively a poor man's
-								segmentation program. In traditional segmentation, the output would be the region of interest.
-								In this method, it actually ends up being the resulting loss, given the original input and the
-								reconstructed output. However, it is still very effective at highlighting those features. If
-								I were still working on this project, I'd absolutely love to talk to the laser experts and
-								try to understand how to characterize a weld as "good". I know some of the metrics we considered
-								were the overall dimensions of the weld, and exactly how well it was positioned...a future feature
-								may be a more in-depth analysis of weld "quality"
-							</p>
 							<img src="images/WeldMask.JPG">
 
 							<h2><a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier">The Repo can be found here.</a></h2>
 							<p>If you've made it this far, I strongly encourage you to look through the autoencoder notebook.</p>
+							</ul>
 						</div>
 					</section>
 
@@ -198,3 +245,89 @@
 
 	</body>
 </html>
+
+
+
+							<!--<p>That's exactly what I do in this project. I teach the model what a good/nominal part looks-->
+								<!--like, and then ask it to reproduce that part. Anything it doesn't understand will fail-->
+								<!--to encode, and will effectively disappear when I restore the image. By comparing the original-->
+								<!--image to the restored image, I can create a mask showing all the areas that look different.-->
+								<!--This mask represents anomalies in the image.-->
+							<!--</p>-->
+
+
+
+
+							<!--<h2>Why an auto-encoder / anomaly detector </h2>-->
+							<!--<p>An anomaly detector can start to find Unknown anomalies. Reading through the notebook,-->
+								<!--you'll find that the model is entirely trained on the nominal (unwelded) dataset, and it is-->
+								<!--capable of detecting any anomalies, not just the welds (although that is the dataset we'll focus on.-->
+								<!--When we know the specific location of an anomaly, the predictive power of this model increases even further.-->
+							<!--</p>-->
+
+
+
+
+							<!--<h2>Problem Statement</h2>-->
+							<!--<p>For the sake of this project, we want to find 2 types of anomalies:-->
+							<!--<ol>-->
+								<!--<li>Known Anomalies: These are anomalies that can be predicted, and which we can specifically-->
+									<!--inspect a part for. These are generally easier to find, since we know what we're looking for.</li>-->
+							<!--<li>Unknown Anomalies: These are harder to find, because we don't know what we're looking for.-->
+								<!--We just know what a good part looks like, and we want to spot anything that looks out of place.</li>-->
+							<!--</ol>-->
+							<!--</p>-->
+							<!--<p>For both (1) and (2), we will be writing a program to detect anomalies immediately before-->
+								<!--performing a weld. The most common anomaly occurs when an operator mixes up parts, and-->
+								<!--re-inserts the part that was just welded. To simulate this, I collected ~300 images,-->
+								<!--147 of which are not yet welded (nominal), and 146 of which are welded (anomalous). We'll-->
+								<!--be primarily trying to distinguish between these two cases.</p>-->
+							<!--<p><b>Bonus:</b> In addition to detecting the presence of a weld, we would like to be-->
+								<!--able to find <b>Unknown anomalies</b>, and <b>characterize the individual welds</b>. </p>-->
+
+
+
+
+								<!--HoweverI had already solved with traditional tools in the Cognex environment, and just wanted-->
+								<!--to see how different approaches would compare.-->
+								<!--I built this after automating the-->
+								<!--solutions with traditional computer vision techniques on embedded systems (mostly Cognex).-->
+								<!--Traditional techniques are powerful at solving controlled problems. These programs are-->
+								<!--fast to execute, easy to explain, and can be developed with a fairly small dataset, since-->
+								<!--a human is hand-tuning based on critical features that they are already aware of. Given-->
+								<!--the success of traditional techniques, we could certainly have continued with the status-->
+								<!--quo. This project is about increasing the available tools, not throwing out the old ones.-->
+							<!--<p>Most of the programs I wrote fell into 2 categories:-->
+								<!--<ul>-->
+									<!--<li>Targeting/detection Tools: Find parts/features for pick and place or targeting a laser, etc.-->
+									<!--This project focuses on the classification application. Targeting is a well-explored problem,-->
+									<!--which you can learn more about in the Facial Feature Detection Project.</li>-->
+									<!--<li>Classifiers: Determining if 1 or more features are present and capable of meeting our acceptance criteria.-->
+										<!--This is the application we'll be focusing on...sort of. Keep reading to understand-->
+										<!--why some of our solutions aren't strictly classifiers</li>-->
+								<!--</ul>-->
+							<!--</p>-->
+
+							<!--<p>I wanted to explore whether we could create tools that would generalize to new applications,-->
+								<!--be recalibrated/retrained more quickly when an existing application changed, and bring-->
+								<!--additional dagnostic power to a given application. With newer products, which was my-->
+								<!--focus, unanticipated challenges are inevitable. New inspections, new features, process drift and lot variation-->
+								<!--can all lead to unpredictable performance in a computer vision program. Ideally you have-->
+								<!--anticipated these changes and made the program more to them, but you can't always rely-->
+								<!--on this, and performance can become unpredictable.-->
+							<!--</p>-->
+							<!--<p>-->
+								<!--I wondered if we could find a way to detect changes, and alert the team, or even prompt-->
+								<!--a retraining procedure. Given our policies, calibratating/retraining an installed program was-->
+								<!--much faster than editing an existing program. In both cases, follow-up activities are required to verify operation.-->
+							<!--</p>-->
+
+							<!--<p>-->
+								<!--To be clear, this is not the right tool for every job. Even the detection tasks I demonstrate-->
+								<!--in this project was addressed with traditional detection tools before I explored this technique.-->
+								<!--That's why I had this data on hand. However, I see tremendous power in building a-->
+								<!--generalized tool to detect variations from what we expect, even if it's only used to-->
+								<!--supplement existing detection programs. This would have helped us detect process variation-->
+								<!--far sooner. This includes surface blemishes (excessive burning, unanticipated changes in the product, missing pieces, lot variation, etc. would-->
+								<!--have saved me and my team quite a few headaches...or at least given us a head start.-->
+							<!--</p>-->
