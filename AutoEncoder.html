@@ -32,16 +32,15 @@
 					<section id="main" class="wrapper">
 						<div class="inner">
 							<h1 class="major">AutoEncoder for Anomaly Detection</h1>
-							<img src="images/WeldExtraction.JPG" alt="" />
-							<h2><a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier">Explore the code!</a></h2>
-							<h2>What's this project about?</h2>
-							<p></p>
-							<img src="images/CubesAndSphere_CreativeCommonsLicense.jpg" alt="Which one doesn't belong?" width="25%" align="left">
+							<!--<img src="images/WeldExtraction.JPG" alt="" />-->
+							<h2><a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier">Explore the Jupyter Notebook!</a></h2>
+							<p>This page still assumes knowledge about deep learning concepts, but is much less technical
+							than the notebook. I suggest starting here to understand the why, and build a high level
+							understanding, before diving into the details with the notebook.</p>
 
-
-							<p>This project explores some tools to supplement</p>
-
-							<h2><b>Project Goals and Motivation</b></h2>
+							<h2><b>Project Goals and Motivation: Expanding our tool belt</b></h2>
+							<!--Consider adding padding to this image...it's simple and useful: https://clemson.instructure.com/courses/12011/pages/image-padding-->
+							<img src="images/AutoEncoder/ToAHammerEveryProblemIsANail.jpg" alt="Which one doesn't belong?" width="25%" align="left" margin="5%">
 							<p>This project explores tools (classifiers and auto-encoders) as alternatives to traditional
 								computer vision tools. In particular, I will be detecting the presence of welds on a part.
 								This is not necessarily a better approach (in fact, it's a bit overkill), but we'll be
@@ -83,7 +82,7 @@
 								Feel free to look through <a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier/blob/main/BinaryClassifier.ipynb">that notebook</a>
 								for details, though we'll spend the rest of this page discussing other tools.
 							</p>
-								<img src="images/TotoroClassifier.JPG">
+								<img src="images/AutoEncoder/TotoroClassifier.JPG">
 
 							<h2>What is an AutoEncoder</h2>
 							<p>An autoencoder is a FeedForward CNN (Convolutional Neural Network) that compresses an
@@ -113,11 +112,11 @@
 							</p>
 						Lossy Compression (using <b>well</b> specialized features)
 								<br>
-								<img src="images/LossyCompression.JPG", alt="Lossy Compression Example">
+								<img src="images/AutoEncoder/LossyCompression.JPG", alt="Lossy Compression Example">
 								<br>
-						Loss Compression (using <b>poorly</b> specialized feature)
+						Loss Compression (using <b>poorly</b> specialized feature, which almost completely drops the weld feature)
 								<br>
-								<img src="images/PoorlySpecializedCompression.JPG" alt="PoorlySpecializedCompression.JPG"/>
+								<img src="images/AutoEncoder/PoorlySpecializedCompression.JPG" alt="PoorlySpecializedCompression.JPG"/>
 							<p>
 								<b>Denoising:</b> Using the fact that our models are lossy and specialized, we can start
 								doing something really interesting. We can start remembering only the things that matter
@@ -128,7 +127,7 @@
 								random noise. When this image is decompressed, the noise has disappeared, and the image
 								has been denoised.
 								<a href="https://keras.io/examples/vision/autoencoder/">Keras has a simple example that shows how powerful this can be, even with VERY noisy images.</a>
-								<img src="images/autoencoder_noisy_digits.png" alt="" />
+								<img src="images/AutoEncoder/autoencoder_noisy_digits.png" alt="" />
 
 							</p>
 							<p><b>Anomaly Detection:</b> Similarly, we can train a model to remember a nominal image,
@@ -138,7 +137,7 @@
 								trying to create the object using the features that we trained on. Finally, we just
 								compare this new image to the original, and we can isolate any poorly reproduced portions,
 								building a heat map of foreign features in a scene.
-							<img src="images/AnomalyDetected.JPG" alt="" data-position="50% 25%" />
+							<img src="images/AutoEncoder/AnomalyDetected.JPG" alt="" data-position="50% 25%" />
 							</p>
 
 							<p>As you can see, the output of the loss function is a heat map of the anomalous parts of
@@ -166,15 +165,20 @@
 							<ol>
 								<li><b>Pre-Processing:</b></li>
 									<ol>
-										<li>Load images</li>
-											<img src="images/???" alt="Show a raw image (nominal and anomalous)">
+										<li>Load images (false color heat maps are used instead of grayscale)</li>
+											<img src="images/AutoEncoder/RawNominal.JPG" alt="Show a raw image (nominal and anomalous)">
+											<img src="images/AutoEncoder/RawAnomalous.JPG" alt="Show a raw image (nominal and anomalous)">
 										<li>resize images</li>
 										<li>Convert BGR to RGB</li>
-										<li>Equalize Histograms</li>
-											<img src="images/???" alt="Show the image equalized (nominal and anomalous)">
+										<li>Equalize Histograms: This technique spreads the histrogram out evenly, such
+											that the Cumulative Distribution Function (CDF) becomes linear. In practice,
+											this spreads out images that have many pixels clumped in bright/dark patches
+											allowing for much better separation in intensity.
+										</li>
+										<img src="images/HistogramEqualization.JPG" alt="Show the image equalized (nominal and anomalous)">
 										<li>Normalize values</li>
 										<li>Convert to numpy arrays</li>
-										<li>Crop (if requested)</li>
+										<li>Crop (if requested - this is an optional parameter that is easy to toggle on/off)</li>
 									</ol>
 								<li>
 									<p>
@@ -190,32 +194,44 @@
 										generalizing to new data. In other words, high specialization, and low-moderate loss.
 									</p>
 									<p>I found that increasing the channel dimension was critical to getting good results,
-								since I'm looking for local features. This isn't the case in the simple denoiser, where
-								you actually want to hold onto much of the spatial information.
+										since I'm looking for local features. This isn't the case in the simple denoiser, where
+										you actually want to hold onto much of the spatial information. Note that the
+										output images are blurred. This is a limitation of the current model. It can
+										be mitigated in 2 ways. First, we could use a larger/more complex model, though
+										the focus of this application is discriminating feature, not producing a perfect
+										heat-map of differences. Second we could introduce skip-nets, which allow CNNs to bypass certain layers, making it
+										easier restore full resolution images. However, this is beyond the current scope.
 									</p>
-									<img src="images/???" alt="Model Output (nominal and anomalous)">
+									<p>Note that the image on the left is a fairly good representation of our input, while
+										the model on the right now seems to be missing the anomalous weld feature! This
+										means we have succeeded!</p>
+									<img src="images/AutoEncoder/PredictedNominal.JPG" alt="Model Output (nominal and anomalous)">
+									<img src="images/AutoEncoder/PredictedAnomalous.JPG" alt="Model Output (nominal and anomalous)">
 								</li>
 								<li><b>Post-Processing:</b></li>
 								<ol>
 									<li>Use loss function calculate the differences between the original and predicted images.
 									At this stage, the image is a great heat-map, and can be useful for manual inspection.</li>
-									<img src="images/???" alt="Loss Image (nominal and anomalous)">
+									<img src="images/AutoEncoder/LossNominal.JPG" alt="Loss Image (nominal and anomalous)">
+									<img src="images/AutoEncoder/LossAnomalous.JPG" alt="Loss Image (nominal and anomalous)">
 									<li>Binarize the anomaly image, based in a tuned threshold</li>
-									<img src="images/???" alt="Binary Image (nominal and anomalous)">
-									<li>Denoise: Using a custom algorithm I wrote based on connected clusters</li>
-									<img src="images/???" alt="Denoised Image (nominal and anomalous)">
+									<img src="images/AutoEncoder/BinaryNominal.JPG" alt="Binary Image (nominal and anomalous)">
+									<img src="images/AutoEncoder/BinaryAnomalous.JPG" alt="Binary Image (nominal and anomalous)">
+									<li>Denoise: I wrote a custom algorithm based on connected clusters, which denoises this image pretty well.</li>
+									<img src="images/AutoEncoder/DenoisedNominal.JPG" alt="Denoised Image (nominal and anomalous)">
+									<img src="images/AutoEncoder/DenoisedAnomalous.JPG" alt="Denoised Image (nominal and anomalous)">
 									<li>(optional) Crop images to a region of interest: This is not required, but can
 									be useful to strengthen signal to noise ratio for the detection of a specific feature.</li>
 									<li>Take the mean of the image, as a summary metric to represent how anamalous the image was.</li>
 								</ol>
 								<li><b>Analysis:</b> A discussion of trade-offs in techniques, and a discussion
 									of setting thresholds. The usual machine learning tools are bit differnt from the
-									manufacturing process control tools, so we discuss both a bit. This includes some
+									manufacturing process control tools. See notebook for discussion. This includes some
 									light discussion of Cpk and plotting precision-recall curves and false-alarm/escape curves.</li>
-									<img src="images/???" alt="Result plot">
+									<img src="images/AutoEncoder/PrecisionRecall_FalseAlarm_Escape_Curves.JPG" alt="Result Distribution">
+									<img src="images/AutoEncoder/LossScoresAcrossAllImages.JPG" alt="Resuling CurveCurves">
 							</ol>
 
-							<img src="images/WeldMask.JPG">
 
 							<h2><a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier">The Repo can be found here.</a></h2>
 							<p>If you've made it this far, I strongly encourage you to look through the autoencoder notebook.</p>
