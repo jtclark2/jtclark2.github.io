@@ -27,4 +27,5 @@ It's really just a TODO list, so it's going to be boring for anyone else!
         - Wakeboarding rack
 - Add Sections:
     - Personal / About Me section
-    - Add School and Work History Section (Luidia / Inutitive / SETI | possibly RHIC, solar energy commission, Davis, Stanford)
+    - Add School (I found a bunch of old project files)
+    - Add Work History Section (Luidia / Inutitive / SETI | possibly RHIC, solar energy commission, Davis, Stanford)
