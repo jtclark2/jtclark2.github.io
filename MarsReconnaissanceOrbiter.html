@@ -34,31 +34,31 @@
 				<!-- Main -->
 					<section id="main" class="wrapper">
 						<div class="inner">
-							<img src="images/???" alt="Placeholder for a cool mars / false color pic" />
+							<img src="images/SETI/Mars.jpg" alt="Placeholder for a cool mars / false color pic" />
 							<h1 class="major">Mars: Spectral Analysis, Denoising, and Landing Site Selection</h1>
 							<h2>The Mission and The Team</h2>
-							<p>Real quick, let's get through the acronym soup...From 2007 - 2009, I worked with
+							<p>Real quick, let's get through the acronym soup. From 2007 - 2009, I worked with
 								SETI (Search for Extra Terrestrial Intelligent) /
 								NASA(National Aeronautics and Space Administration) on the
 								CRISM (Compact Reconnaissance Imaging Spectrometer for Mars) team. CRISM is a hyperspectral camera on
 								MRO (the Mars Reconnaissance Orbiter), a satellite orbiting Mars.
-								My mentors were Janice Bishop, the I and Mario Parente a statistician and
-								<b>(look up and link their bios).</b>
-								I started my work data processing pipeline and simulation team, a hyperspectral  - Compact Reconnaissance Imaging Spectrometer for Mars
+								I contributed to the data processing pipeline, analysis, and simulation efforts under
+								the guidance of my mentors, Janice Bishop and Mario Parente.
+								<!--, a statistician and <b>(look up and link their bios).</b>-->
 							</p>
-							<img src="images/???" alt="Pull a picture of the orbiter, with the camera diagram - NASA made some good graphics" />
+							<img src="images/SETI/Mission.jpg" alt="Mission Graphic (from the MRO Website)"
+							width="50%"/>
 							<p>
 								Our team was interested in a few things. Our explicit mission was to study the geology and climate
-								or Mars, and provide Reconnaissance to select future landing sites. In other words, learn as
-								much as we could about Mars, and figure out the most interesting spots to land future rovers.
+								of Mars, and provide Reconnaissance to select future landing sites.
 								Interesting spots were usually dictated by the minerals that were present, particularly
-								minerals that only form in the presence of water. Nobody at SETI actually thinks there
-								is life on Mars, but it is the only other planet that is both close enough to study, and
+								minerals that only form in the presence of water. While no one at SETI actually thinks there
+								is life on Mars, it is the only other planet that is both close enough to study, and
 								which may have had the appropriate conditions for life (as we know it) to form. We searched
-								for hydrated mineralolgy, which would suggest the presence of water, or rather a history
-								of water being present some time in the last few billion years.
+								for hydrated mineralogy, which would suggest the presence of water some time in the last
+								few billion years.
 							</p>
-							<img src="images/???" alt="Maybe add a picture of the planet mars - just get the mood going"/>
+							<img src="images/SETI/MRO_Render.jpg" alt="Maybe add a picture of the planet mars - just get the mood going"/>
 
 							<p>Additionally, we were interested in the scientific discoveries made along the way. The team
 								published a lot of work in planetary geology, chemistry, and remote sensing. The remote
@@ -67,7 +67,8 @@
 								spectral signatures for different mineral mixtures and grain sizes.
 								<b>I need to look up those papers</b>
 							</p>
-							<img src="images/???" alt="Add a pic of a plot of spectral signatures (ideally from my paper)"/>
+							<img src="images/SETI/RawGypsumSignatures.JPG" alt="Add a pic of a plot of spectral signatures (ideally from my paper)"/>
+							<img src="images/SETI/ContinuumRemovedGypsumSignatures.JPG" alt="Add a pic of a plot of spectral signatures (ideally from my paper)"/>
 
 							<h2>My Contributions</h2>
 							<h3>Background</h3>
@@ -80,7 +81,7 @@
 								the minerals formed. With so many color channels, it was helpful to think of the data in
 								3D (height, width, channel), and we refers to hyperspectral images as data cubes.
 								</p>
-							<img src="images/???" alt="Add a datacube picture"/>
+							<img src="images/SETI/DataCubeExplanation.webp" alt="Add a datacube picture" width="75%"/>
 							<h3>Atmosphere and Noise</h3>
 							<p>I spent my first summer with the team as an intern / student researcher, modeling Martian
 								atmosphere. We want to focus on the surface of the planet, so we factored out the atmosphere
@@ -93,29 +94,33 @@
 								did so well that there was initially some doubt about whether we had smoothed out too much
 								of the real information as well. We hadn't, but it would take us a long time to prove it...
 							</p>
-							<img src="images/???" alt="Pull a noisy pic and a result pic from our paper"/>
+							<!--<img src="images/???" alt="Before and after pic of noise removal."/>-->
 							<h3>Analysis</h3>
 							<p>The second part of our work was analyzing the results, and writing filters to determine
-							what minerals were present. Some of these were manual, mostly ratios of different channels
+								what minerals were present. Some of these were manual, mostly ratios of different channels
 								that indicate the presence of certain minerals. More advanced models used machine learning
-							techniques to help reduce the dimensionality of data, and cluster it into different mineral
-							groups. We would often study pure minerals (called endmembers), as well as minerals in different abundances. Then
-							we would analyze the images, trying to determine how much of each mineral had contributed
-							to create the spectral signatures we saw.</p>
-							<img src="images/???" alt="Show pretty pictures - they don't even need to be from the paper. I can find these online"/>
+								techniques to help reduce the dimensionality of data, and cluster it into different mineral
+								groups. We would often study pure minerals (called endmembers), as well as minerals in different abundances. Then
+								we would analyze the images, trying to determine how much of each mineral had contributed
+								to create the spectral signatures we saw.</p>
+							<img src="images/seti/FalseColorOverlay" alt="Show pretty pictures - they don't even need to be from the paper. I can find these online"/>
 
 							<h3>Simulation</h3>
-							<p>Mars is far away (obviously). When we believed we had detected minerals, we had
-								no way to verify it. There was no way to get ground truth or labels for our data.
-								There was no way to assess the quality of our results. So we built a way! Starting with
-								spectral signatures found in the lab, we simulated high resolution maps (80GB) of Mars-like
-								terrain. Then we generated fractal elevation maps, applied realistic lighting, and atmosphere
-								contributions. Then we simulated CRISM, taking into account the responsiveness to various wavelengths,
-								as well as various types of noise that we had been able to isolate and explain (largely due to
-								temperature dependencies in the sensors. I knew we had done well, when our Principal Investigator
-								walked by one day, saw one of our simulations, and asked what region we were mapping.
+							<p>
+								When we believed we had detected minerals, we had no way to verify our analysis, short of
+								sending prohibitively expensive follow-up missions/landers take a closer look. We had no
+								source of ground truth to label our data, and no way to assess the quality of our results.
+								So we built a way! Starting with spectral signatures found in the lab, we simulated high
+								resolution maps (80GB) of Mars-like terrain. Then we generated fractal elevation maps,
+								applied realistic lighting, and atmosphere contributions. Then we simulated CRISM, taking
+								into account the responsiveness to various wavelengths, as well as various types of noise
+								that we had been able to isolate and explain (largely due to temperature dependencies in
+								the sensors. I knew we had done well, when our Principal Investigator walked by one day,
+								saw one of our simulations, and asked what region we were mapping.
 							</p>
-							<img src="images/???" alt="Pull pics from the paper if I have them...don't specifically remember these"/>
+							<img src="images/SETI/Simulation_LPSC_Parente_and_Clark.jpeg"
+								 width="100%"
+								 alt="Pull pics from the paper if I have them...don't specifically remember these"/>
 
 							<h3>Validation</h3>
 							<p>The model was exceptionally realistic, and once we had it, we knew the ground truth of
@@ -124,9 +129,9 @@
 								a little too good, and this data finally allowed us to verify that we were in fact recovering
 								real data, rather than just smoothing away signal along with the noise. We were also able
 								to start validating our analysis, and showing how good various detection tools were. This
-								work was quite solid, and we won best paper at the very first IEEE WHISPERS
-								(Workshop on Hyperspectral Image and Signal Processing: Evolution in Remote Sensing) conference.
-								<b> link the website, add the icon</b>
+								work was quite solid, and we won best paper at the very first
+								<a href="https://www.ieee-whispers.com/">IEEE WHISPERS
+								(Workshop on Hyperspectral Image and Signal Processing: Evolution in Remote Sensing) conference.</a>
 								<b> Find the paper, and either post/link it</b>
 							</p>
 						</div>
