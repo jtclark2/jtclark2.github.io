@@ -41,32 +41,37 @@
 								allowfullscreen>
 						</iframe>
 						<h2>What is Card Shark?</h2>
-						<p>Card Shark is a computer vision program that recognizes card and highlights the optimal
-							moves to play. In particular, it's the world's best SET player!</p>
+						<p>Card Shark is a computer vision program that recognizes cards and highlights the optimal
+							moves to play. It's the world's best SET player!</p>
 						<h2>What is SET?</h2>
+							Here's a brief description of the rules by <b>Triple S Games</b>!
+						<br>
 							<iframe width="560" height="315" src="https://www.youtube.com/embed/NzXDfSFQ1c0"
 									title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
 									clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 							</iframe>
 						<p>
-							Set is a card game in which 12 cards are laid out, and each player has to pick out sets of 3 cards that follow specific
-							patterns. Each card is identified by combination of 4 features: shape, color, and fill, and count. A set is formed,
-							when each feature is either the same across all three cards, or unqiue across all three cards.
+							Set is a card game in which 12 cards are laid out, and each player has to pick out sets of 3
+							cards that follow specific patterns. Each card is identified by a combination of 4 features:
+							shape, color, and fill, and count. A set is formed when each feature is either the same
+							across all three cards, or unqiue across all three cards.
 						</p>
 
 						<h2>How the application works?</h2>
 						<p>
 							<ol>
-								<li>The application captures a frame, either from file or live video.</li>
+								<li>The application captures a frame, either from an image or live video.</li>
 								<span><img src="images/Capture_AllShades.jpg" alt="pic of raw frame (small)" width="25%"/></span>
 								<li>The frame is pre-processed to filter out major variations in brightness/lighting.
-									This flattens the image so that we can use a single threshold over the entire image
-									in the next step, rather than a dynamic threshold, which is far less likely to
-									form continuous borders, and create consistently closed curves for contour generation.</li>
+									This flattens the image so that we can use a single threshold over the entire image.
+									This will be important in the next step, when we take a threshold over the image.
+									I found that simply using a dynamic threshold was far less consistent, often
+									failing to form continuous closed borders, which are needed for contour generation.</li>
 								<span><img src="images/PreCorrection.jpg" alt="Pic of original image" width="25%"/></span> -
 								<span><img src="images/LightCorrection.jpg" alt="Pic of background subtract (big bowl)" width="25%"/></span> =
 								<span><img src="images/PostCorrection.jpg" alt="corrected image" width="25%"/></span>
-								<li>The frame is thresholded using <a href="https://en.wikipedia.org/wiki/Otsu%27s_method">Otsu's method</a>,
+								<li>The frame is thresholded using
+									<a href="https://en.wikipedia.org/wiki/Otsu%27s_method">Otsu's method</a>,
 									leaving us with a binary image showing the shapes of objects in the image. We
 									isolate the borders of these shapes, extracting them as contours. Then we filter
 									the borders/contours, keeping only the ones that are the shape and size of cards.
@@ -174,7 +179,7 @@
 						<!--<a href="https://github.com/jtclark2/card_shark">Visit the repo</a>-->
 						<br>
 							<a href="https://github.com/jtclark2/card_shark" class="icon brands fa-github"><b>
-									View full source code on github!</b><span class="label">GitHub</span></a>
+									View full source code on github</b><span class="label">GitHub</span></a>
 					</div>
 				</section>
 
