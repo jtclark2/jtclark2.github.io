@@ -2996,7 +2996,7 @@ input, select, textarea {
 		-webkit-flex-direction: row;
 		-ms-flex-direction: row;
 		flex-direction: row;
-		min-height: 22.5em;
+		min-height: 15em; /* Trevor: Min height of image (default 22.5em) */
 	}
 
 		body.is-ie .spotlights > section {
@@ -3005,11 +3005,13 @@ input, select, textarea {
 
 		.spotlights > section > .image {
 			background-position: center center;
-			background-size: cover;
+			background-size: cover;/* Trevor: This locks the width to the size of the section, overriding html elements(default: cover)
+			/* (alternatively, consider: contain) */
+			background-repeat: no-repeat; /* Trevor: Added this */
 			border-radius: 0;
 			display: block;
 			position: relative;
-			width: 25em;
+			width: 25em; /* Trevor: Width of image (default 25em) */
 		}
 
 			.spotlights > section > .image img {
@@ -3034,7 +3036,7 @@ input, select, textarea {
 			}
 
 		.spotlights > section > .content {
-			padding: 4em 5em 2em 5em ;
+			padding: 2em 5em 1em 5em ; /* Trevor: Padding for text next to image: top right bottom left; default = (4em 5em 2em 5em)*/
 			display: -moz-flex;
 			display: -webkit-flex;
 			display: -ms-flex;
