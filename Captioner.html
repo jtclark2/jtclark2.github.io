@@ -35,12 +35,12 @@
 					<section id="main" class="wrapper">
 						<div class="inner">
 							<h1 class="major">Image Captioner</h1>
-							<span ><img src="images/ImageCaption_Plane.JPG" alt="" /></span>
+							<span ><img src="images/Captioner/ImageCaption_Plane.JPG" alt="" /></span>
 							<!--TODO: Mention freezing the pretrained model for the CNN-->
 							<p>This project trains a model to take an input image and convert it into an embedding using
 								a CNN. That embedding matches up to a vocabulary embedding, and uses an LSTM to start
 								generating sentences one word at a time. <a href="https://github.com/jtclark2/ImageCaptioning">Take a look here.</a></p>
-								<img class="image fit" src="images/ImageCaptioner_encoder-decoder.png"/>
+								<img class="image fit" src="images/Captioner/ImageCaptioner_encoder-decoder.png"/>
 
 							<p>This was the capstone for Udacity's <b>Advanced Computer Vision & Deep Learning Coarse</b>.
 								It is written in pytorch, and trained with on the Microsoft Common Objects in COntext (MS COCO)
@@ -56,19 +56,19 @@
 								</ul>
 							</p>
 							<p>Here are a few more image/caption samples (just for fun). See Notebook 3 for even more.</p>
-							<img src="images/ImageCaption_FlyingKites.JPG" alt="" />
-							<img src="images/ImageCaption_RidingWave.JPG" alt="" />
+							<img src="images/Captioner/ImageCaption_FlyingKites.JPG" alt="" />
+							<img src="images/Captioner/ImageCaption_RidingWave.JPG" alt="" />
 
 							<p>I ran out of allotted GPU time, so training was stopped a little early. No model is
 							perfect, but it's pretty fun to see what confuses it...</p>
 							<p>Because of how the vocab embedding works, it will often confuse similar concepts...For
 								example, a person riding a bike will get confused with a person driving a car. In this case,
 								a train is confused with a bus, and I'm guessing the park lines were confused for tracks.</p>
-							<img src="images/ImageCaption_BusConfusion.JPG" alt="" />
+							<img src="images/Captioner/ImageCaption_BusConfusion.JPG" alt="" />
 							<br>
 							<br>
 							<p>Sometimes it misses things that would stand out to most people...</p>
-							<img src="images/ImageCaption_HeadlessMan.JPG" alt="" />
+							<img src="images/Captioner/ImageCaption_HeadlessMan.JPG" alt="" />
 							<br>
 								<a href="https://github.com/jtclark2/ImageCaptioning" class="icon brands fa-github"><b>
 										View full source code on github</b><span class="label">GitHub</span></a>

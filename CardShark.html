@@ -61,15 +61,15 @@
 						<p>
 							<ol>
 								<li>The application captures a frame, either from an image or live video.</li>
-								<span><img src="images/Capture_AllShades.jpg" alt="pic of raw frame (small)" width="25%"/></span>
+								<span><img src="images/CardShark/Capture_AllShades.jpg" alt="pic of raw frame (small)" width="25%"/></span>
 								<li>The frame is pre-processed to filter out major variations in brightness/lighting.
 									This flattens the image so that we can use a single threshold over the entire image.
 									This will be important in the next step, when we take a threshold over the image.
 									I found that simply using a dynamic threshold was far less consistent, often
 									failing to form continuous closed borders, which are needed for contour generation.</li>
-								<span><img src="images/PreCorrection.jpg" alt="Pic of original image" width="25%"/></span> -
-								<span><img src="images/LightCorrection.jpg" alt="Pic of background subtract (big bowl)" width="25%"/></span> =
-								<span><img src="images/PostCorrection.jpg" alt="corrected image" width="25%"/></span>
+								<span><img src="images/CardShark/PreCorrection.jpg" alt="Pic of original image" width="25%"/></span> -
+								<span><img src="images/CardShark/LightCorrection.jpg" alt="Pic of background subtract (big bowl)" width="25%"/></span> =
+								<span><img src="images/CardShark/PostCorrection.jpg" alt="corrected image" width="25%"/></span>
 								<li>The frame is thresholded using
 									<a href="https://en.wikipedia.org/wiki/Otsu%27s_method">Otsu's method</a>,
 									leaving us with a binary image showing the shapes of objects in the image. We
@@ -80,15 +80,15 @@
 									to the area of the full contour. There of a few more checks related to size and
 									aspect ratio as well.
 								</li>
-								<span><img src="images/card_contour_thresh.jpg" alt="thresh image" width="50%"/></span>
+								<span><img src="images/CardShark/card_contour_thresh.jpg" alt="thresh image" width="50%"/></span>
 								<li>Each Card is processed to determine it's attributes:
 									<br>
-									<span><img src="images/IsolatedCardsPlot.JPG" alt="Isolated Cards Plot" width="50%"/></span>
+									<span><img src="images/CardShark/IsolatedCardsPlot.JPG" alt="Isolated Cards Plot" width="50%"/></span>
 									<ul> <!--TODO: Consider a, b, c numbering: https://www.w3schools.com/tags/att_ol_type.asp -->
 										<li>Corners of the card are extracted from contour, and used to project the card into a rectangle of standardized dimensions.</li>
 										<li>The cards are pre-processed, converted to grayscale, blurred to reduce noise, and low frequency background brightness is isolated and subtracted.</li>
 										<li>Thresholding is performed, generating contours around each symbol on the card.</li>
-										<span><img src="images/CardBasicMask.JPG" alt="Isolated Cards Plot" width="25%"/></span>
+										<span><img src="images/CardShark/CardBasicMask.JPG" alt="Isolated Cards Plot" width="25%"/></span>
 										<li><b>Shape and Count</b>:
 												<ul>
 													<li>Method 1: The contours are used to generate masks of the contour
@@ -99,9 +99,9 @@
 														(shifts in x and y). If the card's region of interest is not perfectly
 														centered, misidentification can occur.
 													</li>
-														<span><img src="images/Intersection.JPG" alt="intersection" width="25%"/></span>
-														<span><img src="images/Union.JPG" alt="union" width="25%"/></span>
-														<span><img src="images/IntersectionOverUnion.JPG" alt="IntersectionOverUnion" width="25%"/></span>
+														<span><img src="images/CardShark/Intersection.JPG" alt="intersection" width="25%"/></span>
+														<span><img src="images/CardShark/Union.JPG" alt="union" width="25%"/></span>
+														<span><img src="images/CardShark/IntersectionOverUnion.JPG" alt="IntersectionOverUnion" width="25%"/></span>
 
 													<li>Method 2: In order to overcome the translation invariance, I wrote detectors
 														specific to the shapes used in SET. These detectors calculate
@@ -110,7 +110,7 @@
 														very reliably generate different ratios of area, and I've utilized
 														that as a metric to identify particular shapes.
 													</li>
-													<span><img src="images/ConvexHull_BoundingBox.JPG" alt="shape with overlaid convex hull/ bounding box" width="25%"/></span>
+													<span><img src="images/CardShark/ConvexHull_BoundingBox.JPG" alt="shape with overlaid convex hull/ bounding box" width="25%"/></span>
 
 												</ul>
 										</li>
@@ -120,15 +120,15 @@
 										<li>A copy of the image is converted into HSV space.</li>
 										<li><b>Color</b>:The HSV image is masked to isolate the edge of the shape. The hue is calculated
 											over the mask to find the closest color match.</li>
-											<span><img src="images/EdgeMask.JPG" alt="masked edge" width="25%"/></span>
-											<span><img src="images/EdgeMaskSaturated.JPG" alt="masked edge, saturated" width="25%"/></span>
+											<span><img src="images/CardShark/EdgeMask.JPG" alt="masked edge" width="25%"/></span>
+											<span><img src="images/CardShark/EdgeMaskSaturated.JPG" alt="masked edge, saturated" width="25%"/></span>
 										<li><b>Fill/Texture</b>: A mask is used to calculate average saturation.
 											However, it's fairly sensitive to lighting, so I normalize by the average
 											saturation of the background. I had started by looking for stripes, but low
 											quality webcams struggle to focus, so saturation proved more robust to
 											changes in camera/lighting.</li>
-										<span><img src="images/FillMask.JPG" alt="Masked fill" width="25%"/></span>
-										<span><img src="images/BackgroundMask.JPG" alt="Masked background" width="25%"/></span>
+										<span><img src="images/CardShark/FillMask.JPG" alt="Masked fill" width="25%"/></span>
+										<span><img src="images/CardShark/BackgroundMask.JPG" alt="Masked background" width="25%"/></span>
 											<!--Why don't we take a ratio with the edge...that would vary with focus/lighting
 											just as much, and the solid fill will scale with lighting/focus, giving us a better
 											sense of the values...-->
@@ -140,7 +140,7 @@
 									as well as overlaying text to show the identified attributes. A key and fps
 									indicator are shown as well.
 								</li>
-								<span><img src="images/Processed_WithOverlay.JPG" alt="Full output image with overlays" width="50%"/></span>
+								<span><img src="images/CardShark/Processed_WithOverlay.JPG" alt="Full output image with overlays" width="50%"/></span>
 							</ol>
 						</p>
 
@@ -171,7 +171,7 @@
 							which can be found in KeyboardInput.py, but I don't anticipate most users needing those.
 							I included them mostly for development purposes.
 						</p>
-							<img src="images/Cards_LightingVariation.JPG" alt="Lighting Variations" width="50%" />
+							<img src="images/CardShark/Cards_LightingVariation.JPG" alt="Lighting Variations" width="50%" />
 						<br>
 						<!--<a href="https://github.com/jtclark2/card_shark">Visit the repo</a>-->
 						<br>
