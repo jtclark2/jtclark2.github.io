@@ -37,16 +37,26 @@
 							<h1 class="major">Mechatronics / Robotics Projects</h1>
 							<p>Bringing a little hardware into it... Here are a few mechatronics projects I've built.</p>
 							<h3>Quadcopter</h3>
-							<iframe width="560" height="315" src="https://www.youtube.com/embed/ERFGYw_vcCU"
+							<iframe width="560" height="315" src="https://www.youtube.com/embed/CURanpmRWh8"
 									title="YouTube video player" frameborder="0"
 									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-									allowfullscreen>
+									allowfullscreen></iframe>
 							</iframe>
-							<p>I built this with a friend back in 2013. This was our first semi-stable flight. It
-								definitely wasn't as stable as modern quadcopers, and we were still tuning parameters.
-								It was the middle of the night, and I hope we didn't wake the neighors (it sounds like
-								1000 swarms of bees). We had been working/testing inside all day though, and we just
-								had to get one test flight out!
+							<!--TODO: Swap the caption too-->
+							<p>
+								I built this with a friend back in 2013. We sourced and assembled the drone ourselves.
+								The body is carbon fibre with aluminum motor mounts. We used the open source
+								multiWii software with an arduino. This code is tuned for a specific kit frame, but can
+								be re-tuned with some understanding of PID controllers. It is a little tricky, since you
+								have a PID loop for each axis...we definitely crashed and went through some spare parts
+								while working that out. Also, warning to anybody who wants to build one of these, make
+								sure you're max throttle never exceeds the capacity of any individual motor. The drone
+								will lose stability catastrophically, and it's a bug that only shows up when you start
+								flying aggressively.
+							</p>
+							<p>
+								The drone was very fun to fly. With a 5000mAh 3S, we could get around 35minutes of flight,
+								or carry a payload up to 4 lbs for about 15 minutes.
 							</p>
 
 							<hr>
@@ -60,9 +70,9 @@
 							<p>This was my first autonomous robot! We had ~3 weeks to build and program this. It was the
 								final project in the second course of our mecatronics series (ME 218). The objective was
 								to knock down the towers in the order specified by a central commander. The bot queries
-								the commander remotely to check on targets, and each time one is disabled, it randomly
-								selects a new target. At the end of the run, the robot navigates back to hom, within
-								the red tape.</p>
+								the commander remotely to request the next target. Each time another target is disabled,
+								the bit queries the target commander for the next object, which it will randomly select.
+								At the end of the run, the robot navigates back to home, within the red tape.</p>
 							<p>How does the bot locate itself and it's targets?
 								Sensors:
 								<ul>
@@ -89,24 +99,7 @@
 
 							<hr>
 
-							<h3>eBeam Glove</h3>
-							<iframe width="560" height="315" src="https://www.youtube.com/embed/3CbmWaZ6mP0"
-									title="YouTube video player" frameborder="0"
-									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-									allowfullscreen>
-							</iframe>
-							<p>This glove was made when I was working in a rapid-prototyping and user-testing team at
-								Luidia, making interactive whiteboards. I put this prototype together in ~3 days.
-								I used the part of a stylus that Luidia made to locate the finger on the screen. I added
-								flex sensors to the fingers and aluminum tape to the palm for gesture sensing. I
-								believe the extra functionality was enabled by a python script in the background that
-								was sending mouse movement / clicks / etc.
-							</p>
-							<p>We knew our clients wanted the hover functionality, and this glove was one of many
-								form-factors we considered. This prototype was definitely built to
-								demonstrate functionality, not looks. However, there was a lot of excitement when I
-								shared it, and I think the marketing team spun it to showing how cutting-edge we were.
-							</p>
+
 						</div>
 					</section>
 
