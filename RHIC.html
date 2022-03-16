@@ -21,8 +21,8 @@
 					<ul>
 						<li><a href="index.html">Home</a></li>
 						<li><a href="index.html#Projects">Projects</a></li>
-						<!--<li><a href="index.html#WorkExperience">Work Experience</a></li>-->
-						<!--<li><a href="index.html#Hobbies">Hobbies</a></li>-->
+						<li><a href="index.html#WorkExperience">Work Experience</a></li>
+						<li><a href="index.html#Hobbies">Hobbies</a></li>
 						<li><a href="index.html#Contact">Contact</a></li>
 					</ul>
 				</nav>
@@ -35,12 +35,30 @@
 					<section id="main" class="wrapper">
 						<div class="inner">
 							<h1 class="major">Relativistic Heavy Ion Collider</h1>
-							<span class="image fit"><img src="images/????.png" alt="" /></span>
-							<h2>Website is under construction</h2>
-							<p>RHIC (Relativistic Heavy Ion Collider)
-                                Understanding the universe in the first moments after the big bang by analyze high
-                                energy collisions of gold ions. Particularly, writing geometric routines to improve
-                                mapping of particle trajectories.
+							<h2>RHIC (Relativistic Heavy Ion Collider)</h2>
+							<img src="images/RHIC/Gold_ions_collision.jpg" alt="Detector description" width="40%">
+							<p>
+                                Our goal was to understand the formation of the universe in the first moments after
+								the big bang. We simulated those extreme conditions with high energy heavy ion
+								collisions, meaning gold ion slamming together near the spped of light. By tracking the
+								trajectories of the resulting particles, we could infer their mass, charge, and some
+								properties of their behavior.
+							</p>
+							<p>
+								Particles are accelerated to the required energy levels, at which point
+								they are diverted into colliding trajectories. When ions collide, they explode
+								outward, generating an assortment of secondary particles. STAR (the Solenoidal Tracker
+								At Rhic) is the particle tracker that allows us to record the trajectories of these
+								particles. As the particles explode outward, they are subjected to very powerful
+								electromagnetic fields which bend the particles into helical trajectories. The amount and direction
+								of curvature tells us about the charge and mass of the particles.
+							</p>
+							<img src="images/RHIC/STAR_Detector_Overview_Excerpt.JPG" alt="Detector description">
+							<p>
+								My main contribution was writing classes in C++ to standardize the computational geometry
+								used to understand these particle trajectories. I wrote a helix class, and used it to
+								refine the geometry of particle detection. I mostly did this by ensuring that all
+								trajectories went through the beam path, and the centered on the same collision point.
 							</p>
 						</div>
 					</section>

@@ -21,8 +21,8 @@
 					<ul>
 						<li><a href="index.html">Home</a></li>
 						<li><a href="index.html#Projects">Projects</a></li>
-						<!--<li><a href="index.html#WorkExperience">Work Experience</a></li>-->
-						<!--<li><a href="index.html#Hobbies">Hobbies</a></li>-->
+						<li><a href="index.html#WorkExperience">Work Experience</a></li>
+						<li><a href="index.html#Hobbies">Hobbies</a></li>
 						<li><a href="index.html#Contact">Contact</a></li>
 					</ul>
 				</nav>
@@ -174,7 +174,15 @@
 								</p>
 
 								<h3>shape detection</h3>
-								<p>..is this worth adding. I don't even have any pics???</p>
+								<p>
+									Using a mixture of Hough Transforms and hand tuned corner detectors, I made a tool
+									that would detect pre-determined shapes from any line drawn on an eBeam canvas.
+									Thes lines were just a sequence of eBeam pts. Anytime a drawing came
+									sufficiently close to an ideal shape, I would correct the point to their idealized
+									forms. Using this technique, it was easy to draw perfect lines, angles, circles,
+									rectangles, and stars.
+									<img src="images/Luidia/SimpleTriangle.png" alt="Triangle from points" width="50%">
+								</p>
 
 							</section>
 
@@ -233,16 +241,24 @@
 									specific task. These included test fixtures, programming jigs, enclosures to demo
 									how our product could fit with specific OEMs, etc.
 								</p>
-								<h4>Housing for OEM (this mounted to the OEM's projector)</h4>
-								<img src="images/Luidia/OEM_ProjectorHousing.jpg" width="25%">
-								<h4>Wireless dongle</h4>
-								<img src="images/Luidia/WirelessDongleEnclosurePrototypes.jpg" width="25%">
-								<h4>Programming Jig</h4>
+
+								<figure>
+									<figcaption><b>Housing for mounting to OEM Projector</b></figcaption>
+									<img src="images/Luidia/OEM_ProjectorHousing.jpg" width="25%">
+								</figure>
+
+								<figure>
+									<figcaption><b>Wireless dongle</b></figcaption>
+									<img src="images/Luidia/WirelessDongleEnclosurePrototypes.jpg" width="25%">
+								</figure>
+
+								<figure>
+									<figcaption><b>Programming Jig</b></figcaption>
 								<img src="images/Luidia/ProgrammingJig.jpg" width="25%">
-								<h4>Latency Profiling Jig</h4>
+								</figure>
 
 							</section>
-							<section id="Algorithmic">
+							<p id="Algorithmic">
 							<h2>Algorithmic Improvements</h2>
 							<p>
 								Some of our most needed product improvements were software focused. Our main
@@ -264,18 +280,111 @@
 							<p>
 								All of our code was written with the simplifying assumptions that the sensors were
 								coplanar with the surface being written on. We started integrating our technology into
-								projectors, which meant they wer mounted away from the board. This makes all the geometry
-								more difficult, but as long as you still assume the stylus is on a plane, then the problem
-								can still be solved. Me and another developer (Ruddick Lawrence) updated our existing
-								code-base and wrote a new calibration routine to solve this version of the problem.
+								projectors, which meant the sensors were mounted away from the board. This adds a full
+								geometric projection to transform the points onto a new surface; however, it can still
+								be solved, assuming the stylus stays on a fixed plane.
+							</p>
+							<!--<p>-->
+								<!--Similarly, we made an assumption that the distance between sensors on the receiver were-->
+								<!--fixed. However, all of our distances were calculated based on the speed of sound, which-->
+								<!--is dependent on temperature and pressure. We were able to factor this into our calibration-->
+								<!--routine, greatly reducing warping as a result of temperature variation.</p>-->
+
+							<h3>Kalman Filter for improved accuracy, precision, and responsiveness</h3>
+							<h4>How did this improve the product?</h4>
+							<p>
+								There were two notable challenges that this filter solved. Our stylus data was noisy,
+								meaning that the cursor would jump around a little bit, even if you were holding the
+								stylus in place. Also, the latency wasn't great, so when you started drawing faster,
+								the cursor clearly fell behind. This actually happens with your mouse too, but it becomes
+								painfully obviously when a projector/TV is attempting to overlay a cursor or drawing a line,
+								which starts to lag the stylus by 10-15 inches.
 							</p>
 							<p>
-								Similarly, we made an assumption that the distance between sensors on the receiver were
-								fixed. However, all of our distances were calculated based on the speed of sound, which
-								is dependent on temperature and pressure. We were able to factor this into our calibration
-								routine, greatly reducing warping as a result of temperature variation.</p>
-							<h3>Kalman Filter for improved responsiveness</h3>
-							<p>FILL ME IN</p>
+								I actually built a test rig specifically for this project, so that we could profile
+								the latency of our stylus, quantify any improvements, and analyze our competitors.
+								The test rig had a mount for the stylus, and a stepper motor spinning at a known fixed
+								rate along an over-sized protractor. A DSLR with an external trigger captured the stylus
+								along with the delayed cursor and drawings on the canvas. With this, it was easy to
+								count how many degrees the graphics were delayed, and convert that to time.
+								<img src="images/Luidia/LatencyTestJig.JPG" alt="pic of test rig, showing latency" width="75%">
+								<img src="" alt="Do I have any jitter vids?" width="75%">
+							<p>
+								The Kalman filter that I implemented decreased our jitter by 2.5x, and cut the stylus latency
+								in half.
+							</p>
+							<h4>How do Kalman Filters work? How is one written for a specific application?</h4>
+							<p>
+								Kalman filters are fantastic tools for integrating real-world sensor data. The power
+								of the sensor comes from it's ability to use statistics to integrate multiple measurements,
+								and even predict future results. Fundamentally, the Kalman filter just
+								alternates between two steps:
+							</p>
+								<ul>
+									<li>The Measure Update: Measure the position of the stylus using the
+										sensor data, and use that to update the estimate of the current location.
+									</li>
+									<li>The Motion Update: We don't have anything to measurement our movement between
+										points, so we're going to have to guess the future positions using a
+										physics-based model.</li>
+								</ul>
+							<p>
+								We're going to have to discuss a bit of statistics now. If that's not you're thing,
+								just skip the next few equations: and gaussian distributions to track the estimated position as well as the uncertainty
+								associated with that estimate. I'll share the math in a moment, but fundamentally we're
+								just going to say that any new measurement shifts the location estimate towards the spot
+								that we just measured. Any, and also makes us more confident in our estimate. Any motion estimate makes us less confident
+							</p>
+							<p>
+								<i> I'll try to keep it light, but we're going to need some basic stats now...</i>
+							</p>
+							<p>
+								In reality the measurement and motion updates are tracking Gaussian distributions, with
+								a mean and standard deviation.
+							</p>
+								<ul>
+									<li>Measure Update: The eBeam sensor data is still a good estimate of the mean of
+										the distribution. However, we also need to provide an estimate of the variance.
+										Due to the geometry of the eBeam sensor, this varies depending on the location,
+										on the board, but for simplicity we can just use a configurable constant value.
+										That measurement is integrated with the previous estimate of our location
+										(called the prior probability distribution).
+										The resulting mean is a just an average of the measurement mean and the
+										prior mean, weighted by their variances. This means that the more
+										confident an estimate is, the more the resulting mean will match it.
+										The means are combined in a way that guarantees the variance always shrinks,
+										because the more data we collect, the more confident we become.
+									</li>
+									<figure>
+										<img src="images/Luidia/MeasurementUpdate.png" alt="MotionUpdateDiagram">
+										<figcaption><i>Screenshot from Sebastian Thrun's Object Tracking and Localization Coure.</i></figcaption>
+										<br>
+									</figure>
+
+
+									<li>Motion Update: In order to estimate how far the stylus has moved between
+										measurements, we need to write a physics based model. I ended up assuming
+										acceleration was constant in my model. Obviously this assumption is not perfect,
+										but the stylus doesn't change acceleration very much in 15ms. This result then
+										gets combined with the prior probability distribution. The mean just moves
+										by the amount calculated with the physics-based model. The Means add as
+										root sum of sqaures (RSS).
+									</li>
+									<figure>
+									<img src="images/Luidia/MotionUpdate.png" alt="MotionUpdateDiagram">
+										<figcaption><i>Screenshot from Sebastian Thrun's Object Tracking and Localization Course.</i></figcaption>
+										<br>
+									</figure>
+								</ul>
+								<p>
+									Using the physics model, we were actually able to predict where the stylus would be
+									15ms or more into the future. In practice, I ended up predicting 2 cycles (30ms)
+									ahead, cutting our effective latency in half, while still decreasing position
+									variance (pen jitter) by 2.5x. The only time the the inaccuracy of this prediction
+									was noticeable was in handwriting with tight loops (o's and l's). However,
+									nearly all hand-writing was performed in our canvas app, where we could quickly
+									replace the predicted estimates with the more precise measurement update terms.
+								</p>
 							<h3>Stylus responsiveness firmware</h3>
 							<p>Our stylus took 18ms to wake up, meaning that the first point in a character is often
 							missed. In english, this really only has a significant impact on a lower case 'i'. However,
