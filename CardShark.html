@@ -82,12 +82,13 @@
 								</li>
 								<span><img src="images/card_contour_thresh.jpg" alt="thresh image" width="50%"/></span>
 								<li>Each Card is processed to determine it's attributes:
+									<br>
 									<span><img src="images/IsolatedCardsPlot.JPG" alt="Isolated Cards Plot" width="50%"/></span>
-									<ol>
-										<li>Corners of card are extracted from contour, and used to project the card into a rectangle of standardized dimensions.</li>
-										<li>The cards are pre-processed, converting to grayscale, blurring to reduce noise, and subtracting variation in background brightness.</li>
+									<ul> <!--TODO: Consider a, b, c numbering: https://www.w3schools.com/tags/att_ol_type.asp -->
+										<li>Corners of the card are extracted from contour, and used to project the card into a rectangle of standardized dimensions.</li>
+										<li>The cards are pre-processed, converted to grayscale, blurred to reduce noise, and low frequency background brightness is isolated and subtracted.</li>
 										<li>Thresholding is performed, generating contours around each symbol on the card.</li>
-										<span><img src="images/CardBasicMask.JPG" alt="Isolated Cards Plot" width="50%"/></span>
+										<span><img src="images/CardBasicMask.JPG" alt="Isolated Cards Plot" width="25%"/></span>
 										<li><b>Shape and Count</b>:
 												<ul>
 													<li>Method 1: The contours are used to generate masks of the contour
@@ -113,7 +114,7 @@
 
 												</ul>
 										</li>
-										<li>The silhouettes from the previous step are treated as mask, and erode operations
+										<li>The silhouettes from the previous step are treated as a mask, and erode operations
 										are used with some bitwise operations to generate masks that isolate the edges
 											of shapes, the interior fill of shapes, and the background of the card.</li>
 										<li>A copy of the image is converted into HSV space.</li>
@@ -121,10 +122,11 @@
 											over the mask to find the closest color match.</li>
 											<span><img src="images/EdgeMask.JPG" alt="masked edge" width="25%"/></span>
 											<span><img src="images/EdgeMaskSaturated.JPG" alt="masked edge, saturated" width="25%"/></span>
-										<li><b>Fill/Texture</b>: A mask is used to calculate average saturation. However, it's fairly
-											sensitive to lighting, so we normalize by the average saturation of the background.
-											I had started by looking for stripes, but low quality webcams struggle to focus,
-											so saturation proved more robust to changes in camera/lighting.</li>
+										<li><b>Fill/Texture</b>: A mask is used to calculate average saturation.
+											However, it's fairly sensitive to lighting, so I normalize by the average
+											saturation of the background. I had started by looking for stripes, but low
+											quality webcams struggle to focus, so saturation proved more robust to
+											changes in camera/lighting.</li>
 										<span><img src="images/FillMask.JPG" alt="Masked fill" width="25%"/></span>
 										<span><img src="images/BackgroundMask.JPG" alt="Masked background" width="25%"/></span>
 											<!--Why don't we take a ratio with the edge...that would vary with focus/lighting
@@ -152,14 +154,9 @@
 									light gray.
 								</li>
 								<li>
-									Realistically lighting brightness and source changes quite a bit. The colors of cards
-									are influenced by the source, and needed to be color-balanced. Outside light is great,
-									as long as it's not too bright. Room lights are more yellow than natural light,
-									while iphones and computer screens are much more blue.
-								</li>
-								<li>
-									Variations in intensity throughout an image make thresholding challenging,
-									needing to be isolated and corrected.
+									Realistically, lighting brightness and incident hue change quite a bit. The resulting colors of cards
+									are influenced by the source and as a result need to be color-balanced. Compared to
+									outside light, most indoor lights are more yellow, while screens are much more blue.
 								</li>
 							</ul>
 						</p>
@@ -171,7 +168,7 @@
 							routines you can run with keyboard inputs. For the most part, just press 'c' to
 							calibrate colors, and use '[' and ']' to adjust the saturation threshold. There are a
 							number of additional features (saving, pausing, quitting, more manual calibrations, etc.)
-							which can be found in KeyboardInput.py, but I don't anticipate most users needed those.
+							which can be found in KeyboardInput.py, but I don't anticipate most users needing those.
 							I included them mostly for development purposes.
 						</p>
 							<img src="images/Cards_LightingVariation.JPG" alt="Lighting Variations" width="50%" />

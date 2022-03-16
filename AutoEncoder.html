@@ -34,31 +34,31 @@
 				<!-- Main -->
 					<section id="main" class="wrapper">
 						<div class="inner">
-							<h1 class="major">AutoEncoder for Anomaly Detection</h1>
-							<p>This page is less technical than the notebook, but still assumes familiarity with CNNs.</p>
+							<h1 class="major">Auto-Encoder for Anomaly Detection</h1>
+							<p>This page is less technical than the <a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier/blob/main/AutoEncoder%20And%20AnomalyDetector.ipynb" >Jupyter notebook</a>, but still assumes familiarity with CNNs.</p>
 
 							<h2><b>Project Goals and Motivation: Expanding our tool belt</b></h2>
 							<!--Consider adding padding to this image...it's simple and useful: https://clemson.instructure.com/courses/12011/pages/image-padding-->
-							<img src="images/AutoEncoder/ToAHammerEveryProblemIsANail.jpg" alt="Which one doesn't belong?" width="25%" align="left" margin="5%">
+							<!--<img src="images/AutoEncoder/ToAHammerEveryProblemIsANail.jpg" alt="Which one doesn't belong?" width="25%" align="left" margin="5%">-->
 							<p>This project explores tools (classifiers and auto-encoders) as alternatives to traditional
 								computer vision tools. In particular, I will be detecting the presence of welds on a part.
-								This is not necessarily a better approach (in fact, it's a bit overkill), but we'll be
-								using it to describe the technology and some of the advantages/disadvantages of this
-								approach. We'll focus far more on the auto-encoder, simply because classifiers are so
-								prevalent.
+								This is not necessarily a better approach for this application, but it adds tremondous
+								power in the right circumstances. For our purposes, it will make a good case-study as I
+								describe the technology and some of the advantages/disadvantages of this technique.
+								I'll focus far more on the auto-encoder, simply because classifiers are so prevalent.
 							</p>
 
 
 							<p>For this application, I wanted to answer a few questions:
 							<ul>
-								<li>Could we create a program that didn't need any specific knowledge of the features
-									that we would be detecting? If so, the program could generalize to new applications
-									by updating just training data and hyperparameters.
+								<li>Could a program be created that didn't need any specific knowledge of the features
+									being detecting? If so, the program could generalize to new applications, with
+									changes isolated to training data and hyperparameters.
 								</li>
-								<li>Could we training with a small dataset (~150 images). Deep learning has a reputation
-								of requiring large amounts of data, but given how well controlled this dataset is, I
-								wanted to know if we could manage with a small dataset.</li>
-								<li>Can we detect problems/anamolies that we didn't explicitly anticipate during training?</li>
+								<li>Could a model be trained with a small dataset (~150 images). Deep learning has a reputation
+								of requiring large amounts of data, but given how well controlled these images are, it
+									seemed plausible.</li>
+								<li>Can problems/anamolies be detected, even if they were not explicitly anticipated during training?</li>
 							</ul>
 							</p>
 
@@ -68,7 +68,9 @@
 							<p>
 								Binary Classification is the obvious choice for determining the presence of a specific
 								feature/defect, since it is effectively a binary classification problem. I wrote it for
-								a slightly different shaped data-set, but for confidentiality reasons, I can't share that.
+								a slightly different shaped data-set, but for confidentiality reasons (the dataset
+								was based on an unreleased product from a previous job), I won't share those images
+								here.
 								Rather than re-wrinting it for the weld data I'll be sharing below, I created another data set
 								with pictures of a stuffed Totoro (from the beloved Miyazaki movie). This also has the advantage
 								of showing a much more varied / difficult dataset.
@@ -76,15 +78,15 @@
 							<p>
 								The program makes good use of Tensorflow tools that greatly simplify data loading and
 								augmentation. If I were to repeat this project, I would use transfer learning with
-								and established model, such as VGG-16, and just freeze the last few layers. I did
+								an established model, such as VGG-16, and just freeze the last few layers. I did
 								something similar in <a href="https://github.com/jtclark2/ImageCaptioning/blob/main/model.py">this project.</a></p>
 								Feel free to look through <a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier/blob/main/BinaryClassifier.ipynb">that notebook</a>
-								for details, though we'll spend the rest of this page discussing other tools.
+								for details, though we'll spend the rest of this page discussing the auto-encoder application.
 							</p>
 								<img src="images/AutoEncoder/TotoroClassifier.JPG">
 
-							<h2>What is an AutoEncoder</h2>
-							<p>An autoencoder is a FeedForward CNN (Convolutional Neural Network) that compresses an
+							<h2>What is an Auto-encoder?</h2>
+							<p>An auto-encoder is a FeedForward CNN (Convolutional Neural Network) that compresses an
 								image into a small hidden layer, sometimes called a latent space, and then reverses that
 								operation to restore the original image. The act of encoding the image data into a lower
 								dimensional space is what lends the model its name.</p>
@@ -129,7 +131,7 @@
 								<img src="images/AutoEncoder/autoencoder_noisy_digits.png" alt="" />
 
 							</p>
-							<p><b>Anomaly Detection:</b> Similarly, we can train a model to remember a nominal image,
+							<p><b>Anomaly Detection:</b> Similarly, I can train a model to remember a nominal image,
 								representing all the features we hope to see. This model learns to reproduce only the
 								features we've taught it about. Now, if new feature appears in an image, our latent
 								space in unable to save it. As a result, we regenerate it incorrectly, producing junk or
@@ -163,7 +165,7 @@
 							<h2>The processing pipeline:</h2>
 							<ol>
 								<li><b>Pre-Processing:</b></li>
-									<ol>
+									<ol> <!--TODO: Consider a, b, c numbering: https://www.w3schools.com/tags/att_ol_type.asp -->
 										<li>Load images (false color heat maps are used instead of grayscale)</li>
 											<img src="images/AutoEncoder/RawNominal.JPG" alt="Show a raw image (nominal and anomalous)">
 											<img src="images/AutoEncoder/RawAnomalous.JPG" alt="Show a raw image (nominal and anomalous)">
@@ -174,7 +176,7 @@
 											this spreads out images that have many pixels clumped in bright/dark patches
 											allowing for much better separation in intensity.
 										</li>
-										<img src="images/HistogramEqualization.JPG" alt="Show the image equalized (nominal and anomalous)">
+										<img src="images/AutoEncoder/HistogramEqualization.JPG" alt="Show the image equalized (nominal and anomalous)">
 										<li>Normalize values</li>
 										<li>Convert to numpy arrays</li>
 										<li>Crop (if requested - this is an optional parameter that is easy to toggle on/off)</li>
@@ -223,18 +225,16 @@
 									be useful to strengthen signal to noise ratio for the detection of a specific feature.</li>
 									<li>Take the mean of the image, as a summary metric to represent how anamalous the image was.</li>
 								</ol>
-								<li><b>Analysis:</b> A discussion of trade-offs in techniques, and a discussion
-									of setting thresholds. The usual machine learning tools are bit differnt from the
-									manufacturing process control tools. See notebook for discussion. This includes some
+								<li><b>Analysis:</b> See notebook for a discussion of different analysis tools that can
+									be used to set the threshold between these nominal/anomalous categories, and the
+									trade-offs that different methods are subject to. The usual machine learning tools
+									are bit different from the manufacturing process control tools, since ML
+									researchers and manufacturers have different concerns. This includes some
 									light discussion of Cpk and plotting precision-recall curves and false-alarm/escape curves.</li>
 									<img src="images/AutoEncoder/PrecisionRecall_FalseAlarm_Escape_Curves.JPG" alt="Result Distribution">
 									<img src="images/AutoEncoder/LossScoresAcrossAllImages.JPG" alt="Resuling CurveCurves">
 							</ol>
 
-
-							<!--<h2><a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier">The Repo can be found here.</a></h2>-->
-							<!--<p>If you've made it this far, I strongly encourage you to look through the autoencoder notebook.</p>-->
-							<!--</ul>-->
 							<a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier" class="icon brands fa-github"><b>
 									View full source code on github</b><span class="label">GitHub</span></a>
 						</div>
@@ -262,89 +262,3 @@
 
 	</body>
 </html>
-
-
-
-							<!--<p>That's exactly what I do in this project. I teach the model what a good/nominal part looks-->
-								<!--like, and then ask it to reproduce that part. Anything it doesn't understand will fail-->
-								<!--to encode, and will effectively disappear when I restore the image. By comparing the original-->
-								<!--image to the restored image, I can create a mask showing all the areas that look different.-->
-								<!--This mask represents anomalies in the image.-->
-							<!--</p>-->
-
-
-
-
-							<!--<h2>Why an auto-encoder / anomaly detector </h2>-->
-							<!--<p>An anomaly detector can start to find Unknown anomalies. Reading through the notebook,-->
-								<!--you'll find that the model is entirely trained on the nominal (unwelded) dataset, and it is-->
-								<!--capable of detecting any anomalies, not just the welds (although that is the dataset we'll focus on.-->
-								<!--When we know the specific location of an anomaly, the predictive power of this model increases even further.-->
-							<!--</p>-->
-
-
-
-
-							<!--<h2>Problem Statement</h2>-->
-							<!--<p>For the sake of this project, we want to find 2 types of anomalies:-->
-							<!--<ol>-->
-								<!--<li>Known Anomalies: These are anomalies that can be predicted, and which we can specifically-->
-									<!--inspect a part for. These are generally easier to find, since we know what we're looking for.</li>-->
-							<!--<li>Unknown Anomalies: These are harder to find, because we don't know what we're looking for.-->
-								<!--We just know what a good part looks like, and we want to spot anything that looks out of place.</li>-->
-							<!--</ol>-->
-							<!--</p>-->
-							<!--<p>For both (1) and (2), we will be writing a program to detect anomalies immediately before-->
-								<!--performing a weld. The most common anomaly occurs when an operator mixes up parts, and-->
-								<!--re-inserts the part that was just welded. To simulate this, I collected ~300 images,-->
-								<!--147 of which are not yet welded (nominal), and 146 of which are welded (anomalous). We'll-->
-								<!--be primarily trying to distinguish between these two cases.</p>-->
-							<!--<p><b>Bonus:</b> In addition to detecting the presence of a weld, we would like to be-->
-								<!--able to find <b>Unknown anomalies</b>, and <b>characterize the individual welds</b>. </p>-->
-
-
-
-
-								<!--HoweverI had already solved with traditional tools in the Cognex environment, and just wanted-->
-								<!--to see how different approaches would compare.-->
-								<!--I built this after automating the-->
-								<!--solutions with traditional computer vision techniques on embedded systems (mostly Cognex).-->
-								<!--Traditional techniques are powerful at solving controlled problems. These programs are-->
-								<!--fast to execute, easy to explain, and can be developed with a fairly small dataset, since-->
-								<!--a human is hand-tuning based on critical features that they are already aware of. Given-->
-								<!--the success of traditional techniques, we could certainly have continued with the status-->
-								<!--quo. This project is about increasing the available tools, not throwing out the old ones.-->
-							<!--<p>Most of the programs I wrote fell into 2 categories:-->
-								<!--<ul>-->
-									<!--<li>Targeting/detection Tools: Find parts/features for pick and place or targeting a laser, etc.-->
-									<!--This project focuses on the classification application. Targeting is a well-explored problem,-->
-									<!--which you can learn more about in the Facial Feature Detection Project.</li>-->
-									<!--<li>Classifiers: Determining if 1 or more features are present and capable of meeting our acceptance criteria.-->
-										<!--This is the application we'll be focusing on...sort of. Keep reading to understand-->
-										<!--why some of our solutions aren't strictly classifiers</li>-->
-								<!--</ul>-->
-							<!--</p>-->
-
-							<!--<p>I wanted to explore whether we could create tools that would generalize to new applications,-->
-								<!--be recalibrated/retrained more quickly when an existing application changed, and bring-->
-								<!--additional dagnostic power to a given application. With newer products, which was my-->
-								<!--focus, unanticipated challenges are inevitable. New inspections, new features, process drift and lot variation-->
-								<!--can all lead to unpredictable performance in a computer vision program. Ideally you have-->
-								<!--anticipated these changes and made the program more to them, but you can't always rely-->
-								<!--on this, and performance can become unpredictable.-->
-							<!--</p>-->
-							<!--<p>-->
-								<!--I wondered if we could find a way to detect changes, and alert the team, or even prompt-->
-								<!--a retraining procedure. Given our policies, calibratating/retraining an installed program was-->
-								<!--much faster than editing an existing program. In both cases, follow-up activities are required to verify operation.-->
-							<!--</p>-->
-
-							<!--<p>-->
-								<!--To be clear, this is not the right tool for every job. Even the detection tasks I demonstrate-->
-								<!--in this project was addressed with traditional detection tools before I explored this technique.-->
-								<!--That's why I had this data on hand. However, I see tremendous power in building a-->
-								<!--generalized tool to detect variations from what we expect, even if it's only used to-->
-								<!--supplement existing detection programs. This would have helped us detect process variation-->
-								<!--far sooner. This includes surface blemishes (excessive burning, unanticipated changes in the product, missing pieces, lot variation, etc. would-->
-								<!--have saved me and my team quite a few headaches...or at least given us a head start.-->
-							<!--</p>-->
