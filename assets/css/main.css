@@ -3314,6 +3314,15 @@ input, select, textarea {
 			background-color: #3d8544;
 		}
 
+
+		.wrapper.style5 {
+			background-color: #277030;
+		}
+
+		.wrapper.style5-alt {
+			background-color: #37783e;
+		}
+
 		.wrapper.fullscreen {
 			display: -moz-flex;
 			display: -webkit-flex;
