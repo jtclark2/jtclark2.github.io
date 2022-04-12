@@ -34,6 +34,33 @@
 				<!-- Main -->
 					<section id="main" class="wrapper">
 						<div class="inner">
+							<h2><b>Purpose</b></h2>
+							<p>
+								The main purpose is to identify any anomalies in an image, which really just means
+								anything unusual. This model can do that in 3 specific ways:
+								<ol>
+									<li>We can look at a specific region of an image, where we expect a change,
+										and ask if we saw it. This is among the most practical applications,
+										though there are so many tools for this, such as binary classification models,
+										which are generally better at straightforward applications such as this.
+									</li>
+									<li>We can look at an image where we don't expect any changes, and flag anything
+										unusual, without having to know specifically what we're looking for. This is
+										really useful in manufacturing, where the goal is to repeatably produce the
+										same product every time.</li>
+									<li>We can extract richer information, similar to image segmentation. We can actually
+										outline the location and shape of a feature, which can then be used for any number
+										of applications, such as targeting the next step in an operation, post-processing
+										with additional scripts to understand other qualities of a feature, or just
+										generate visuals to help operators better understand what they are looking at.</li>
+								</ol>
+
+								I'll talk a little later how do deal with the anomalies we find. Specifically, when is
+								it appropriate to fully automate a response, and when it is better to hand off some
+								information to operators. There are a lot of factors, including how likely the issue is
+								to occur, how likely the application/model is to detect it, how critical it is if we fail to
+								address the issues, and how familiar our users are with the information.
+							</p>
 							<h1 class="major">Auto-Encoder for Anomaly Detection</h1>
 							<p>This page is less technical than the <a href="https://github.com/jtclark2/AutoEncoderAndBinaryClassifier/blob/main/AutoEncoder%20And%20AnomalyDetector.ipynb" >Jupyter notebook</a>, but still assumes familiarity with CNNs.</p>
 
