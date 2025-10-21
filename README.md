@@ -1,5 +1,5 @@
 # Trevor Clark's Website
-Default Host: github: https://jtclark2.github.io/git
+Default Host: github: https://jtclark2.github.io
 
 #Who's this for?
 ME - Trevor
